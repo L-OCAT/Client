@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {Platform} from 'react-native'
 import  * as KakaoLogin from '@react-native-seoul/kakao-login';
+import { isIOS } from '../../lib/utils/platform';
 
 // svg
 import Logo from '../../assets/svg/logo.svg';
@@ -9,8 +9,6 @@ import KakaoIcon from '../../assets/svg/kakaoIcon.svg';
 import AppleIcon from '../../assets/svg/appleIcon.svg';
 
 const LoginScreen = () => {
-
-  const isIOS = Platform.OS === 'ios'
   
   const kakaoLogin = async () => {
     await KakaoLogin.login()
