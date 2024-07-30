@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LOCATClient</string>
+    <string name="kakao_app_key">221ce56160a39781deddeff188b86b81</string>
 </resources>
