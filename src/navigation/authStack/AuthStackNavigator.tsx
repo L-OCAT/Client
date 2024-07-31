@@ -8,7 +8,6 @@ const AuthStackNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={{headerShown: false}}>
       <AuthStack.Screen name="Auth" component={LoginScreen} />
-      {/* 프로필 설정 스크린 추가 */}
     </AuthStack.Navigator>
   );
 };
