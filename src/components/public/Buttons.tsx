@@ -1,8 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, Dimensions, ViewStyle, TextStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, ViewStyle, TextStyle } from 'react-native';
 import { COLORS, FONTFAMILY } from '../../lib/styles/theme';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+import { SCREEN_WIDTH } from '../../lib/utils/public/screenDimensions'
 
 enum ButtonSize {
     XS = 'xs',
@@ -26,15 +25,15 @@ interface BtnProps {
     isDisabled?: boolean;
 }
 
-const Button: React.FC<BtnProps> = ({ text, onPress, size = ButtonSize.MD, type = ButtonType.PRIMARY, textStyle, isDisabled = false }) => {
-    const buttonStyles = [
+const Button = ({ text, onPress, size = ButtonSize.MD, type = ButtonType.PRIMARY, textStyle, isDisabled = false }: BtnProps) => {
+    const buttonStyles: ViewStyle[] = [
         styles.btn,
         styles[type],
         styles[size],
-        type === ButtonType.PRIMARY && isDisabled ? styles.disabledPrimary : undefined
+        type === ButtonType.PRIMARY && isDisabled && styles.disabledPrimary
     ];
 
-    const buttonTextStyles = [
+    const buttonTextStyles: TextStyle[] = [
         styles.btnText,
         textStyle
     ];
@@ -104,14 +103,5 @@ const styles = StyleSheet.create({
     },
     disabledPrimary: {
         backgroundColor: COLORS.orange.Orange02,
-    }
-});
-
-export const TextInputStyle = StyleSheet.create({
-    textInput: {
-        borderRadius: 8,
-        backgroundColor: COLORS.gray.Gray01,
-        paddingHorizontal: 14,
-        color: COLORS.black
     }
 });

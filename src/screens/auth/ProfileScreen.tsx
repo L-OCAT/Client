@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { PrimaryLargeBtn, TertiaryMediumBtn } from '../../components/public/Buttons';
+import { TextInputStyle } from '../../lib/styles/textInputStyles'
+import { COLORS } from '../../lib/styles/theme';
 
 //svg
 import ProfileImg from '../../assets/svg/defaultProfile.svg';
-import { PrimaryLargeBtn, TertiaryMediumBtn, TextInputStyle } from '../../components/public/Buttons';
-import { COLORS } from '../../lib/styles/theme';
 
 const ProfileScreen = () => {
+    const [isValid, setIsValid] = useState(false);
     const [nickName, setNickName] = useState('')
     
     const isDuplicate = () => {
         console.log('isDuplicate', nickName)
     }
 
-    const next = () => {
+    const validateNickname = (value: string) => {
+        const nicknameRegex = /^[\w가-힣]{2,7}$/;
+        const isValid = nicknameRegex.test(value);
+        setIsValid(isValid);
+    };
+      
+    useEffect(() => {
+        validateNickname(nickName);
+    }, [nickName]);
+
+    const handleNextPage = () => {
         console.log('next')
     }
 
@@ -35,9 +47,13 @@ const ProfileScreen = () => {
                     />
                     <TertiaryMediumBtn text={'중복확인'} onPress={isDuplicate}/>
                 </View>
-                <Text style={styles.smallText}>닉네임은 추후 수정이 가능해요</Text>
+                <Text style={TextInputStyle.smallText}>닉네임은 추후 수정이 가능해요</Text>
             </View>
-            {nickName.length >= 2 ? <PrimaryLargeBtn text={'다음'} onPress={next}/> : <PrimaryLargeBtn text={'다음'} isDisabled={true}/>}
+            <PrimaryLargeBtn 
+                text={'다음'} 
+                onPress={handleNextPage} 
+                isDisabled={!isValid}
+            />
         </View>
     );
 };
@@ -47,7 +63,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.white,
         justifyContent: 'space-between',
-        // paddingBottom: 40
     },
     profileImg: {
         alignItems: 'center',
@@ -58,11 +73,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 16,
-    },
-    smallText: {
-        color: COLORS.gray.Gray04,
-        fontSize: 12,
-        marginLeft: 16
     }
 })
 
