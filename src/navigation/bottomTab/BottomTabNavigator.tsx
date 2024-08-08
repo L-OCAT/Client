@@ -3,11 +3,12 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {COLORS} from '../../lib/styles/theme';
 import {getBottomTabOptions} from '../../lib/utils/bottom-tab-helper';
-import HomeStackNavigator from './HomeStackNavigator';
+import HomeScreen from '../../screens/Home/HomeScreen';
+import {BottomTabParamList} from '../types';
 import MapStackNavigator from './MapStackNavigator';
 import MyPageStackNavigator from './MyPageStackNavigator';
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => {
   return (
@@ -21,7 +22,7 @@ const BottomTabNavigator = () => {
       <BottomTab.Screen
         options={({route}) => getBottomTabOptions(route.name)}
         name="HomeTab"
-        component={HomeStackNavigator}
+        component={HomeScreen}
       />
       <BottomTab.Screen
         options={({route}) => getBottomTabOptions(route.name)}
