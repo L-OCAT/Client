@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { PrimaryLargeBtn, TertiaryMediumBtn } from '../../components/public/Buttons';
-import { TextInputStyle } from '../../lib/styles/textInputStyles'
+import { textInputStyles, smallTextStyles } from '../../lib/styles/textInputStyles'
 import { COLORS } from '../../lib/styles/theme';
 
 //svg
@@ -9,9 +9,9 @@ import ProfileImg from '../../assets/svg/defaultProfile.svg';
 
 const ProfileScreen = () => {
     const [isValid, setIsValid] = useState(false);
-    const [nickName, setNickName] = useState('')
+    const [nickname, setNickname] = useState('')
     
-    const isDuplicate = () => {
+    const checkNicknameDuplicate = () => {
         console.log('isDuplicate', nickName)
     }
 
@@ -22,8 +22,8 @@ const ProfileScreen = () => {
     };
       
     useEffect(() => {
-        validateNickname(nickName);
-    }, [nickName]);
+        validateNickname(nickname);
+    }, [nickname]);
 
     const handleNextPage = () => {
         console.log('next')
@@ -36,18 +36,18 @@ const ProfileScreen = () => {
                 <View style={styles.profileImg}><ProfileImg/></View>
                 <View style={styles.textInput}>
                     <TextInput
-                        style={{...TextInputStyle.textInput, flex: 1}}
+                        style={{...textInputStyles.default, flex: 1}}
                         autoCapitalize='none'
                         maxLength={7}
                         placeholder='2글자 이상 8글자 미만'
                         placeholderTextColor='#c1c1c1'
-                        value={nickName} 
-                        onChangeText={(e) => setNickName(e)} 
-                        onSubmitEditing={isDuplicate}
+                        value={nickname} 
+                        onChangeText={(e) => setNickname(e)} 
+                        onSubmitEditing={checkNicknameDuplicate}
                     />
-                    <TertiaryMediumBtn text={'중복확인'} onPress={isDuplicate}/>
+                    <TertiaryMediumBtn text={'중복확인'} onPress={checkNicknameDuplicate}/>
                 </View>
-                <Text style={TextInputStyle.smallText}>닉네임은 추후 수정이 가능해요</Text>
+                <Text style={smallTextStyles.default}>닉네임은 추후 수정이 가능해요</Text>
             </View>
             <PrimaryLargeBtn 
                 text={'다음'} 
