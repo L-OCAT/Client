@@ -1,7 +1,7 @@
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {isIOS} from '../../lib/utils/platform';
+import {isIOS} from '../../lib/utils';
 
 // svg
 import AppleIcon from '../../assets/svg/appleIcon.svg';
