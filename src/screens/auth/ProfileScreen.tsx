@@ -12,7 +12,7 @@ const ProfileScreen = () => {
     const [nickname, setNickname] = useState('')
     
     const checkNicknameDuplicate = () => {
-        console.log('isDuplicate', nickName)
+        console.log('isDuplicate', nickname)
     }
 
     const validateNickname = (value: string) => {
