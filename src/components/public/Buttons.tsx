@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
 import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
-import {SCREEN_WIDTH} from '../../lib/utils';
+import {SCREEN_WIDTH} from '../../lib/utils/dimensions';
 
 enum ButtonSize {
   XS = 'xs',
