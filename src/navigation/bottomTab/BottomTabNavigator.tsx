@@ -4,6 +4,7 @@ import {StyleSheet, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS} from '../../lib/styles/theme';
 import {getBottomTabOptions} from '../../lib/utils/bottom-tab-helper';
+import {h} from '../../lib/utils/dimensions';
 import HomeScreen from '../../screens/Home/HomeScreen';
 import {BottomTabParamList} from '../types';
 import MapStackNavigator from './MapStackNavigator';
@@ -15,7 +16,7 @@ const BottomTabNavigator = () => {
   const insets = useSafeAreaInsets();
   const tabBarStyles: ViewStyle = {
     ...styles.TabBarStyle,
-    height: 48 + insets.bottom,
+    height: h(48) + insets.bottom,
     paddingBottom: insets.bottom,
   };
 

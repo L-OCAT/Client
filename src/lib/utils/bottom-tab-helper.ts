@@ -4,6 +4,7 @@ import MapIcon from '../../assets/svg/ico_map.svg';
 import MyPageIcon from '../../assets/svg/ico_my_page.svg';
 import {BottomTabParamList} from '../../navigation/types';
 import {COLORS, FONTFAMILY} from '../styles/theme';
+import {h, w} from './dimensions';
 
 const defaultOptions: BottomTabNavigationOptions = {
   tabBarActiveTintColor: COLORS.orange.Orange01,
@@ -26,8 +27,8 @@ export const getBottomTabOptions = (
         HomeIcon({
           ...props,
           fill: props.color,
-          width: 28,
-          height: 28,
+          width: w(28),
+          height: h(28),
         });
       break;
     case 'MapTab':
@@ -36,8 +37,8 @@ export const getBottomTabOptions = (
         MapIcon({
           ...props,
           fill: props.color,
-          width: 28,
-          height: 28,
+          width: w(28),
+          height: h(28),
         });
       break;
     case 'MyPageTab':
@@ -46,8 +47,8 @@ export const getBottomTabOptions = (
         MyPageIcon({
           ...props,
           fill: props.color,
-          width: 28,
-          height: 28,
+          width: w(28),
+          height: h(28),
         });
   }
 

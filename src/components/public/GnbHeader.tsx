@@ -2,7 +2,8 @@ import {useNavigation} from '@react-navigation/native';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import CloseIcon from '../../assets/svg/icon_close.svg';
 import BackIcon from '../../assets/svg/icon_left.svg';
-import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
+import {COLORS} from '../../lib/styles/theme';
+import {typography} from '../../lib/styles/typography';
 
 enum GnbHeaderType {
   BACK = 'back',
@@ -31,7 +32,7 @@ const GnbHeader = ({
           </Pressable>
         )}
       </View>
-      <Text style={styles.headerTitle}>{title}</Text>
+      <Text style={[typography.body_01_B, styles.headerTitle]}>{title}</Text>
       <View style={styles.BtnWrapper}>
         {type === GnbHeaderType.CLOSE && (
           <Pressable onPress={onPress}>
@@ -63,8 +64,6 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     flex: 1,
-    fontSize: 18,
-    fontFamily: FONTFAMILY.pretendard_bold,
     color: COLORS.black,
     textAlign: 'center',
   },
