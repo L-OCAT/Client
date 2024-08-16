@@ -54,8 +54,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LOCATClient/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-LOCATClient-LOCATClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LOCATClient-LOCATClientTests.release.xcconfig"; path = "Target Support Files/Pods-LOCATClient-LOCATClientTests/Pods-LOCATClient-LOCATClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9999A73F3BD436C99BA22E7 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Bold.otf"; path = "../src/assets/fonts/Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Medium.otf"; path = "../src/assets/fonts/Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; name = "Pretendard-Medium.otf"; path = "../src/assets/fonts/Pretendard-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +108,15 @@
 				29A7B3083710BAD9A123C09F /* PrivacyInfo.xcprivacy */,
 			);
 			name = LOCATClient;
+			sourceTree = "<group>";
+		};
+		1ABD27B177D4479AB896FE63 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -164,15 +173,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		1ABD27B177D4479AB896FE63 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
