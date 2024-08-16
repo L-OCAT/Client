@@ -14,6 +14,7 @@ type OrangeColors = {
 };
 
 export interface IColors {
+  defaultBG: string;
   black: string;
   white: string;
   gray: GrayColors;
@@ -22,16 +23,17 @@ export interface IColors {
 }
 
 export const COLORS: IColors = {
-  black: '#000',
-  white: '#FFF',
+  defaultBG: '#F4F5F8',
+  black: '#17171B',
+  white: '#FBFCFD',
   gray: {
     Gray01: '#FBFBFB',
-    Gray02: '#ECECEC',
-    Gray03: '#C1C1C1',
-    Gray04: '#A5A5A5',
-    Gray05: '#6F6F6F',
-    Gray06: '#555',
-    Gray07: '#333',
+    Gray02: '#E2E2E4',
+    Gray03: '#C3C3C6',
+    Gray04: '#A0A0A4',
+    Gray05: '#68686D',
+    Gray06: '#525258',
+    Gray07: '#353539',
   },
   orange: {
     Orange01: '#FF5F2C',
@@ -43,9 +45,11 @@ export const COLORS: IColors = {
 export interface IFontFamily {
   pretendard_regular: string;
   pretendard_bold: string;
+  pretendard_medium: string;
 }
 
 export const FONTFAMILY: IFontFamily = {
   pretendard_regular: 'Pretendard-Regular',
   pretendard_bold: 'Pretendard-Bold',
+  pretendard_medium: 'Pretendard-Medium',
 };

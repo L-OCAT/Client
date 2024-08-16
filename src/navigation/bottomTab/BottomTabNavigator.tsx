@@ -1,27 +1,37 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ViewStyle} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS} from '../../lib/styles/theme';
 import {getBottomTabOptions} from '../../lib/utils/bottom-tab-helper';
-import HomeStackNavigator from './HomeStackNavigator';
+import {ms} from '../../lib/utils/dimensions';
+import HomeScreen from '../../screens/Home/HomeScreen';
+import {BottomTabParamList} from '../types';
 import MapStackNavigator from './MapStackNavigator';
 import MyPageStackNavigator from './MyPageStackNavigator';
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator = () => {
+  const insets = useSafeAreaInsets();
+  const tabBarStyles: ViewStyle = {
+    ...styles.tabBarStyle,
+    height: ms(48) + insets.bottom,
+    paddingBottom: insets.bottom,
+  };
+
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: styles.TabBarStyle,
+        tabBarStyle: tabBarStyles,
       }}
       initialRouteName="HomeTab">
       <BottomTab.Screen
         options={({route}) => getBottomTabOptions(route.name)}
         name="HomeTab"
-        component={HomeStackNavigator}
+        component={HomeScreen}
       />
       <BottomTab.Screen
         options={({route}) => getBottomTabOptions(route.name)}
@@ -40,11 +50,11 @@ const BottomTabNavigator = () => {
 export default BottomTabNavigator;
 
 const styles = StyleSheet.create({
-  TabBarStyle: {
-    height: 80,
+  tabBarStyle: {
     position: 'absolute',
     borderTopWidth: 1,
     borderTopColor: COLORS.shadow,
-    borderRadius: 8,
+    borderTopStartRadius: 8,
+    borderTopEndRadius: 8,
   },
 });

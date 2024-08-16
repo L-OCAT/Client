@@ -10,7 +10,7 @@ const RootStackNavigator = () => {
   return (
     <RootStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="AuthStack">
+      initialRouteName="MainStack">
       <RootStack.Screen name="AuthStack" component={AuthStackNavigator} />
       <RootStack.Screen name="MainStack" component={MainStackNavigator} />
     </RootStack.Navigator>

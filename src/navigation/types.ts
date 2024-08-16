@@ -1,14 +1,34 @@
+import {NavigatorScreenParams} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
 export type RootStackParamList = {
   AuthStack: undefined;
-  MainStack: undefined;
+  MainStack: NavigatorScreenParams<MainStackParamList>;
 };
 
 export type MainStackParamList = {
-  BottomTab: undefined;
+  BottomTab: NavigatorScreenParams<BottomTabParamList>;
+  LostItemStack: NavigatorScreenParams<LostItemStackParamList>;
+  FoundItemStack: NavigatorScreenParams<FoundItemStackParamList>;
 };
+
+export type MainStackNavigationProp = StackNavigationProp<MainStackParamList>;
 
 export type BottomTabParamList = {
   HomeTab: undefined;
   MapTab: undefined;
-  MyPageTab: undefined;
+  MyPageTab: NavigatorScreenParams<MyPageStackParamList>;
+};
+
+export type MyPageStackParamList = {
+  MyPage: undefined;
+  MatchingList: undefined;
+};
+
+export type LostItemStackParamList = {
+  LostItemRegistration: undefined;
+};
+
+export type FoundItemStackParamList = {
+  FoundItemRegistration: undefined;
 };
