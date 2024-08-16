@@ -8,7 +8,7 @@ import {typography} from '../../lib/styles/typography';
 import FastImage from 'react-native-fast-image';
 import RightIcon from '../../assets/svg/icon_right.svg';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
-import {ms} from '../../lib/utils/dimensions';
+import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
 import {
   BottomTabParamList,
   MainStackNavigationProp,
@@ -36,7 +36,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={[styles.container]}>
+    <View style={[screenLayout, styles.container]}>
       <Text style={[typography.subTitle_01, styles.titleText]}>
         00님의 소중한 물건,{'\n'}
         LOCAT에서 찾아요!
@@ -52,7 +52,7 @@ const HomeScreen = () => {
             <Pressable
               style={[styles.navigationBtn, styles.registrationBtn]}
               onPress={handleNavigateToLostItem}>
-              <Text style={typography.subTitle_02}>
+              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
                 잃어버린 물건{'\n'}등록하기
               </Text>
               <FastImage
@@ -64,7 +64,7 @@ const HomeScreen = () => {
             <Pressable
               style={[styles.navigationBtn, styles.registrationBtn]}
               onPress={handleNavigateToFoundItem}>
-              <Text style={typography.subTitle_02}>
+              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
                 습득한 물건{'\n'}등록하기
               </Text>
               <FastImage
@@ -77,7 +77,9 @@ const HomeScreen = () => {
           <Pressable
             style={[styles.navigationBtn, styles.matchingListBtn]}
             onPress={handleNavigateToMatchingList}>
-            <Text style={typography.subTitle_02}>등록한 물건 리스트</Text>
+            <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+              등록한 물건 리스트
+            </Text>
             <FastImage
               source={require('../../assets/images/matchingList.png')}
               style={styles.matchingListImage}
@@ -88,7 +90,9 @@ const HomeScreen = () => {
         {/* 아래 부분은 추후 분실물 등록 여부에 따라 제어 */}
         <View style={styles.bottomContentsWrapper}>
           <View>
-            <Text style={typography.subTitle_02}>최근 등록된 습득물</Text>
+            <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+              최근 등록된 습득물
+            </Text>
             <Text style={styles.subText}>
               내 위치 주변에 등록된 습득물을 확인해요
             </Text>
@@ -109,32 +113,34 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    gap: ms(50),
+    justifyContent: 'flex-end',
     backgroundColor: COLORS.orange.Orange01,
   },
   titleText: {
-    width: '100%',
+    position: 'absolute',
+    top: topWithSafeArea(112),
+    left: 0,
+    right: 0,
     color: COLORS.white,
-    marginTop: ms(112),
     paddingHorizontal: ms(16),
   },
   characterImage: {
     position: 'absolute',
+    top: topWithSafeArea(64),
     left: ms(225),
-    top: ms(64),
     width: ms(245),
     height: ms(279),
   },
   contentsWrapper: {
     position: 'absolute',
-    top: ms(249),
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top: topWithSafeArea(249),
+    height: '100%',
     backgroundColor: COLORS.defaultBG,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
+  },
+  contentTitleText: {
+    color: COLORS.gray.Gray07,
   },
   navigationBtnWrapper: {
     paddingTop: ms(20 + 12),
@@ -186,7 +192,7 @@ const styles = StyleSheet.create({
   },
   subText: {
     fontFamily: FONTFAMILY.pretendard_medium,
-    fontSize: ms(16, 0.1),
+    fontSize: 16,
     lineHeight: 16 * 1.3,
     color: COLORS.gray.Gray04,
   },

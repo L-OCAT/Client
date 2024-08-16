@@ -7,6 +7,7 @@ import {isIOS} from '../../lib/utils';
 import AppleIcon from '../../assets/svg/appleIcon.svg';
 import KakaoIcon from '../../assets/svg/kakaoIcon.svg';
 import Logo from '../../assets/svg/logo.svg';
+import {ms} from '../../lib/utils/dimensions';
 
 const LoginScreen = () => {
   const kakaoLogin = async () => {
@@ -60,12 +61,12 @@ const styles = StyleSheet.create({
   },
   appleBtn: {
     backgroundColor: 'black',
-    marginTop: 14,
+    marginTop: ms(14),
   },
   btnText: {
     fontSize: 18,
     textAlign: 'center',
-    padding: 16,
+    padding: ms(16),
     width: '78%',
   },
   kakaoBtnText: {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   logo: {
-    marginBottom: 40,
+    marginBottom: ms(40),
   },
 });
 

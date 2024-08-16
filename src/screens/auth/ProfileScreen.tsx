@@ -14,6 +14,7 @@ import {COLORS} from '../../lib/styles/theme';
 import ProfileImg from '../../assets/svg/defaultProfile.svg';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
+import {ms} from '../../lib/utils/dimensions';
 
 const ProfileScreen = () => {
   const screenLayout = useScreenLayout();
@@ -84,13 +85,13 @@ const styles = StyleSheet.create({
   },
   profileImg: {
     alignItems: 'center',
-    marginVertical: 30,
+    marginVertical: ms(30),
   },
   textInput: {
-    gap: 10,
+    gap: ms(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 16,
+    marginHorizontal: ms(16),
   },
 });
 
