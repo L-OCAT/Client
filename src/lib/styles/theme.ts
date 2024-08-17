@@ -20,6 +20,7 @@ export interface IColors {
   gray: GrayColors;
   orange: OrangeColors;
   shadow: string;
+  btn_disabled: string;
 }
 
 export const COLORS: IColors = {
@@ -27,12 +28,12 @@ export const COLORS: IColors = {
   black: '#17171B',
   white: '#FBFCFD',
   gray: {
-    Gray01: '#FBFBFB',
+    Gray01: '#F4F4F4',
     Gray02: '#E2E2E4',
     Gray03: '#C3C3C6',
     Gray04: '#A0A0A4',
     Gray05: '#68686D',
-    Gray06: '#525258',
+    Gray06: '#555555',
     Gray07: '#353539',
   },
   orange: {
@@ -40,16 +41,19 @@ export const COLORS: IColors = {
     Orange02: '#FFD1C3',
   },
   shadow: '#EEEEEE',
+  btn_disabled: '#FFEDE7',
 };
 
 export interface IFontFamily {
   pretendard_regular: string;
   pretendard_bold: string;
   pretendard_medium: string;
+  pretendard_semibold: string;
 }
 
 export const FONTFAMILY: IFontFamily = {
   pretendard_regular: 'Pretendard-Regular',
   pretendard_bold: 'Pretendard-Bold',
+  pretendard_semibold: 'Pretendard-SemiBold',
   pretendard_medium: 'Pretendard-Medium',
 };
