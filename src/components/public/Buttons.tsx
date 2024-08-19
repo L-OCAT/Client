@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
 import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
-import {SCREEN_WIDTH} from '../../lib/utils/dimensions';
+import {ms, SCREEN_WIDTH} from '../../lib/utils/dimensions';
 
 enum ButtonSize {
   XS = 'xs',
@@ -89,24 +89,24 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   [ButtonSize.XS]: {
-    width: 56,
-    height: 24,
+    width: ms(56),
+    height: ms(24),
     borderRadius: 4,
   },
   [ButtonSize.SM]: {
-    width: 73,
-    height: 32,
+    width: ms(73),
+    height: ms(32),
     borderRadius: 4,
   },
   [ButtonSize.MD]: {
-    width: 95,
-    height: 47,
+    width: ms(95),
+    height: ms(47),
     borderRadius: 8,
   },
   [ButtonSize.LG]: {
-    width: SCREEN_WIDTH - 32,
-    height: 56,
-    marginHorizontal: 16,
+    width: ms(SCREEN_WIDTH - 32),
+    height: ms(56),
+    marginHorizontal: ms(16),
     borderRadius: 8,
   },
   [ButtonType.PRIMARY]: {
