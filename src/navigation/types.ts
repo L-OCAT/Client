@@ -27,6 +27,8 @@ export type MyPageStackParamList = {
 
 export type LostItemStackParamList = {
   LostItemRegistration: undefined;
+  LostItemCategory: undefined;
+  LostItemColors: undefined;
 };
 
 export type FoundItemStackParamList = {

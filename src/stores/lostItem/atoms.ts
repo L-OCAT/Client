@@ -15,6 +15,7 @@ export const lostItemMainImageAtom = atom<string | null>({
   key: 'lostItemMainImageAtom',
   default: null,
 });
+
 export const lostItemCategoryAtom = atom<CategorySelection>({
   key: 'lostItemCategoryAtom',
   default: {

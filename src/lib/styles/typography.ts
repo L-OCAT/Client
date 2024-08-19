@@ -37,6 +37,16 @@ export const typography = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16 * 1.3,
   },
+  body_02_B: {
+    fontFamily: FONTFAMILY.pretendard_bold,
+    fontSize: 16,
+    lineHeight: 16 * 1.3,
+  },
+  body_02_SB: {
+    fontFamily: FONTFAMILY.pretendard_semibold,
+    fontSize: 16,
+    lineHeight: 16 * 1.3,
+  },
   caption: {
     fontFamily: FONTFAMILY.pretendard_regular,
     fontSize: 12,
