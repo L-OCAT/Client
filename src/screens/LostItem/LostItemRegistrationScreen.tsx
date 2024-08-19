@@ -1,61 +1,73 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import CategorySelector from '../../components/lostItem/CategorySelector';
 import ColorSelector from '../../components/lostItem/ColorSelector';
-import DetailInput from '../../components/lostItem/DetailInput';
 import ImagePicker from '../../components/lostItem/ImagePicker';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
-import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
+import {typography} from '../../lib/styles/typography';
+import {ms} from '../../lib/utils/dimensions';
+import {MainStackNavigationProp} from '../../navigation/types';
+import {
+  lostItemCategoryAtom,
+  lostItemDescriptionAtom,
+  lostItemNameAtom,
+} from '../../stores/lostItem';
 
 const LostItemRegistrationScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const screenLayout = useScreenLayout();
+  const [itemName, setItemName] = useRecoilState(lostItemNameAtom);
+  const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
+  const category = useRecoilValue(lostItemCategoryAtom);
 
-  const [images, setImages] = useState<string[]>([]);
-  const [representativeImage, setRepresentativeImage] = useState<string | null>(
-    null,
-  );
-  const [itemName, setItemName] = useState('');
-  const [category, setCategory] = useState('');
-  const [colors, setColors] = useState<string[]>([]);
-  const [description, setDescription] = useState('');
+  const handleCategoryPress = () => {
+    navigation.navigate('LostItemStack', {screen: 'LostItemCategory'});
+  };
+
+  const handleColorPress = () => {
+    navigation.navigate('LostItemStack', {screen: 'LostItemColors'});
+  };
 
   const handleNavigateToMap = () => {};
 
-  const isFormValid = itemName && category && colors.length > 0;
+  const isNextButtonEnabled = category.main !== null && category.sub !== null;
 
   return (
     <View style={[screenLayout, styles.container]}>
       <BackBtnGnbHeader title="분실물 등록" />
       <View style={styles.contentsWrapper}>
-        <ImagePicker
-          images={images}
-          setImages={setImages}
-          representativeImage={representativeImage}
-          setRepresentativeImage={setRepresentativeImage}
-        />
-        <Text style={styles.label}>물건명</Text>
+        <ImagePicker />
+        <Text style={[typography.body_02_B, styles.label]}>물건명</Text>
         <TextInput
-          style={textInputStyles.default}
+          style={styles.input}
           value={itemName}
           onChangeText={setItemName}
           placeholder="물건 이름을 입력해주세요."
           placeholderTextColor={COLORS.gray.Gray03}
         />
-        <CategorySelector category={category} setCategory={setCategory} />
-        <ColorSelector colors={colors} setColors={setColors} />
-        <DetailInput
-          description={description}
-          setDescription={setDescription}
+        <CategorySelector onPress={handleCategoryPress} />
+        <ColorSelector onPress={handleColorPress} />
+
+        <Text style={[typography.body_02_B, styles.label]}>상세설명</Text>
+        <TextInput
+          style={[styles.input, styles.descriptionInput]}
+          value={description}
+          onChangeText={setDescription}
+          placeholder="잃어버린 물건의 특징을 상세하게 작성해주세요."
+          placeholderTextColor={COLORS.gray.Gray03}
+          multiline
         />
       </View>
       <Pressable
-        style={[styles.nextButton, !isFormValid && styles.disabledButton]}
         onPress={handleNavigateToMap}
-        disabled={!isFormValid}>
+        style={[
+          styles.nextButton,
+          !isNextButtonEnabled && styles.disabledButton,
+        ]}>
         <Text style={styles.nextButtonText}>다음</Text>
       </Pressable>
     </View>
@@ -65,24 +77,33 @@ const LostItemRegistrationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
-    gap: 12,
+    gap: ms(12),
   },
   contentsWrapper: {
-    paddingHorizontal: 16,
-    gap: 20,
+    paddingHorizontal: ms(16),
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.gray.Gray02,
+    borderRadius: 8,
+    padding: ms(12),
+    fontFamily: FONTFAMILY.pretendard_regular,
+    fontSize: 14,
+    color: COLORS.black,
   },
   label: {
-    fontFamily: FONTFAMILY.pretendard_medium,
-    fontSize: 16,
-    color: COLORS.black,
-    marginBottom: 8,
+    color: COLORS.gray.Gray05,
+  },
+  descriptionInput: {
+    height: ms(150),
+    textAlignVertical: 'top',
   },
   nextButton: {
     backgroundColor: COLORS.orange.Orange01,
-    padding: 16,
+    padding: ms(16),
     borderRadius: 8,
     alignItems: 'center',
-    margin: 16,
+    margin: ms(16),
   },
   disabledButton: {
     backgroundColor: COLORS.gray.Gray03,

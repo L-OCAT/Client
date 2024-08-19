@@ -1,28 +1,20 @@
-// components/ImagePicker.tsx
-
 import React from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {useRecoilState} from 'recoil';
+
 import CameraIcon from '../../assets/svg/icon_camera.svg';
 import DeleteIcon from '../../assets/svg/icon_delete.svg';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {ms} from '../../lib/utils/dimensions';
+import {lostItemImagesAtom, lostItemMainImageAtom} from '../../stores/lostItem';
 
-interface ImagePickerProps {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
-  representativeImage: string | null;
-  setRepresentativeImage: React.Dispatch<React.SetStateAction<string | null>>;
-}
+const ImagePicker = () => {
+  const [images, setImages] = useRecoilState(lostItemImagesAtom);
+  const [mainImage, setMainImage] = useRecoilState(lostItemMainImageAtom);
 
-const ImagePicker = ({
-  images,
-  setImages,
-  representativeImage,
-  setRepresentativeImage,
-}: ImagePickerProps) => {
   const handleImageSelect = () => {
     launchImageLibrary(
       {mediaType: 'photo', selectionLimit: 10 - images.length},
@@ -31,8 +23,8 @@ const ImagePicker = ({
           const newImages = response.assets.map(asset => asset.uri as string);
           const updatedImages = [...images, ...newImages].slice(0, 10);
           setImages(updatedImages);
-          if (!representativeImage) {
-            setRepresentativeImage(updatedImages[0]);
+          if (!mainImage && updatedImages.length > 0) {
+            setMainImage(updatedImages[0]);
           }
         }
       },
@@ -45,13 +37,13 @@ const ImagePicker = ({
   const handleImageDelete = (index: number) => {
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages);
-    if (representativeImage === images[index]) {
-      setRepresentativeImage(updatedImages[0] || null);
+    if (mainImage === images[index]) {
+      setMainImage(updatedImages[0] || null);
     }
   };
 
-  const handleSetRepresentative = (image: string) => {
-    setRepresentativeImage(image);
+  const handleSetMainImage = (image: string) => {
+    setMainImage(image);
   };
 
   const renderImageItem = ({item, index}: {item: string; index: number}) => (
@@ -59,13 +51,13 @@ const ImagePicker = ({
       <Pressable
         style={[
           styles.imageContainer,
-          item === representativeImage && styles.representativeImageWrapper,
+          item === mainImage && styles.mainImageWrapper,
         ]}
-        onPress={() => handleSetRepresentative(item)}>
+        onPress={() => handleSetMainImage(item)}>
         <FastImage source={{uri: item}} style={styles.image} />
-        {item === representativeImage && (
-          <View style={styles.representativeBadge}>
-            <Text style={[styles.representativeText, typography.caption]}>
+        {item === mainImage && (
+          <View style={styles.mainImageBadge}>
+            <Text style={[styles.mainImageText, typography.caption]}>
               대표사진
             </Text>
           </View>
@@ -137,10 +129,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: 'hidden',
   },
-  representativeImageWrapper: {
-    borderWidth: 1,
-    borderColor: COLORS.orange.Orange01,
-  },
   image: {
     width: '100%',
     height: '100%',
@@ -151,7 +139,11 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
-  representativeBadge: {
+  mainImageWrapper: {
+    borderWidth: 1,
+    borderColor: COLORS.orange.Orange01,
+  },
+  mainImageBadge: {
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -160,7 +152,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(4),
     alignItems: 'center',
   },
-  representativeText: {
+  mainImageText: {
     color: COLORS.white,
   },
 });
