@@ -15,6 +15,7 @@ import ProfileImg from '../../assets/svg/defaultProfile.svg';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {ms} from '../../lib/utils/dimensions';
+import { typography } from '../../lib/styles/typography';
 
 const ProfileScreen = () => {
   const screenLayout = useScreenLayout();
@@ -44,7 +45,7 @@ const ProfileScreen = () => {
     <View style={[styles.container, screenLayout]}>
       <View>
         <BackBtnGnbHeader title="프로필 설정" />
-        <Text style={{color: 'black'}}>프로필과 닉네임을 설정해주세요</Text>
+        <Text style={[typography.subTitle_01, styles.titleText]}>프로필과 닉네임을 설정해주세요</Text>
         <View style={styles.profileImg}>
           <ProfileImg />
         </View>
@@ -62,6 +63,7 @@ const ProfileScreen = () => {
           <TertiaryMediumBtn
             text={'중복확인'}
             onPress={checkNicknameDuplicate}
+            isDisabled={!nickname}
           />
         </View>
         <Text style={smallTextStyles.default}>
@@ -82,6 +84,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
     justifyContent: 'space-between',
+  },
+  titleText: {
+    color: COLORS.gray.Gray07,
+    marginLeft: ms(20),
+    marginTop: ms(16)
   },
   profileImg: {
     alignItems: 'center',

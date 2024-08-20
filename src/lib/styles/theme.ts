@@ -27,7 +27,7 @@ export const COLORS: IColors = {
   black: '#17171B',
   white: '#FBFCFD',
   gray: {
-    Gray01: '#FBFBFB',
+    Gray01: '#F4F4F4',
     Gray02: '#E2E2E4',
     Gray03: '#C3C3C6',
     Gray04: '#A0A0A4',
