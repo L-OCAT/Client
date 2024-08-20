@@ -1,5 +1,5 @@
 import {atom} from 'recoil';
-import {CategorySelection} from './types';
+import {CategorySelection, SelectedColors} from './types';
 
 export const lostItemNameAtom = atom<string>({
   key: 'lostItemNameAtom',
@@ -24,7 +24,7 @@ export const lostItemCategoryAtom = atom<CategorySelection>({
   },
 });
 
-export const lostItemColorsAtom = atom<string[]>({
+export const lostItemColorsAtom = atom<SelectedColors>({
   key: 'lostItemColorsAtom',
   default: [],
 });

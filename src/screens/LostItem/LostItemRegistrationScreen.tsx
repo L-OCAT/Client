@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {useRecoilState, useRecoilValue} from 'recoil';
@@ -12,7 +11,6 @@ import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
-import {MainStackNavigationProp} from '../../navigation/types';
 import {
   lostItemCategoryAtom,
   lostItemDescriptionAtom,
@@ -21,15 +19,10 @@ import {
 } from '../../stores/lostItem';
 
 const LostItemRegistrationScreen = () => {
-  const navigation = useNavigation<MainStackNavigationProp>();
   const screenLayout = useScreenLayout();
   const [itemName, setItemName] = useRecoilState(lostItemNameAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
   const category = useRecoilValue(lostItemCategoryAtom);
-
-  const handleColorPress = () => {
-    navigation.navigate('LostItemStack', {screen: 'LostItemColors'});
-  };
 
   const handleNavigateToMap = () => {};
 
@@ -53,7 +46,7 @@ const LostItemRegistrationScreen = () => {
           />
         </View>
         <CategorySelector />
-        <ColorSelector onPress={handleColorPress} />
+        <ColorSelector />
         <View style={styles.textInputWrapper}>
           <Text style={[typography.body_02_B, styles.label]}>상세설명</Text>
           <TextInput

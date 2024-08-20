@@ -1,3 +1,5 @@
+import {COLORS} from '../../lib/styles/theme';
+
 export enum MainCategory {
   WALLET = '지갑',
   BAG = '가방',
@@ -93,3 +95,37 @@ export const SUB_CATEGORIES: Record<
   [MainCategory.CARD]: Object.values(CardSubCategory),
   [MainCategory.JEWELRY]: Object.values(JewelrySubCategory),
 };
+
+export enum ColorOption {
+  WHITE = '화이트',
+  BLACK = '블랙',
+  GRAY = '그레이',
+  RED = '레드',
+  ORANGE = '오렌지',
+  YELLOW = '옐로우',
+  GREEN = '그린',
+  SKY_BLUE = '스카이블루',
+  BLUE = '블루',
+  PURPLE = '퍼플',
+  PINK = '핑크',
+  BROWN = '브라운',
+  OTHER = '기타',
+}
+
+export const COLOR_VALUES: Record<ColorOption, string | null> = {
+  [ColorOption.WHITE]: COLORS.white,
+  [ColorOption.BLACK]: COLORS.black,
+  [ColorOption.GRAY]: '#E5E5E5',
+  [ColorOption.RED]: '#FF3838',
+  [ColorOption.ORANGE]: COLORS.orange.Orange01,
+  [ColorOption.YELLOW]: '#FFEA2C',
+  [ColorOption.GREEN]: '#7EC02B',
+  [ColorOption.SKY_BLUE]: '#A7DFFF',
+  [ColorOption.BLUE]: '#2C9AFF',
+  [ColorOption.PURPLE]: '#7544FF',
+  [ColorOption.PINK]: '#FFA0A0',
+  [ColorOption.BROWN]: '#7D2B2B',
+  [ColorOption.OTHER]: null,
+};
+
+export type SelectedColors = ColorOption[];
