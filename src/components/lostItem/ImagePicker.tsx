@@ -1,50 +1,25 @@
 import React from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {useRecoilState} from 'recoil';
 
 import CameraIcon from '../../assets/svg/icon_camera.svg';
 import DeleteIcon from '../../assets/svg/icon_delete.svg';
+import {useImagePicker} from '../../hooks/useImagePicker';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {ms} from '../../lib/utils/dimensions';
-import {lostItemImagesAtom, lostItemMainImageAtom} from '../../stores/lostItem';
 
 const ImagePicker = () => {
-  const [images, setImages] = useRecoilState(lostItemImagesAtom);
-  const [mainImage, setMainImage] = useRecoilState(lostItemMainImageAtom);
-
-  const handleImageSelect = () => {
-    launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 10 - images.length},
-      response => {
-        if (response.assets) {
-          const newImages = response.assets.map(asset => asset.uri as string);
-          const updatedImages = [...images, ...newImages].slice(0, 10);
-          setImages(updatedImages);
-          if (!mainImage && updatedImages.length > 0) {
-            setMainImage(updatedImages[0]);
-          }
-        }
-      },
-    );
-  };
+  const {
+    images,
+    mainImage,
+    handleImageSelect,
+    handleImageDelete,
+    handleSetMainImage,
+  } = useImagePicker({maxImages: 10});
 
   const imageCounting =
     images.length > 0 ? `${images.length}/10` : `50mb 이하의${'\n'}PNG,JPG`;
-
-  const handleImageDelete = (index: number) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);
-    if (mainImage === images[index]) {
-      setMainImage(updatedImages[0] || null);
-    }
-  };
-
-  const handleSetMainImage = (image: string) => {
-    setMainImage(image);
-  };
 
   const renderImageItem = ({item, index}: {item: string; index: number}) => (
     <View style={styles.imageOuterContainer}>
