@@ -1,6 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {
+  BackHandler,
   Pressable,
   StyleSheet,
   Text,
@@ -8,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilState, useRecoilValue, useResetRecoilState} from 'recoil';
 import CheckIcon from '../../assets/svg/icon_check.svg';
 import CategorySelector from '../../components/lostItem/CategorySelector';
 import ColorSelector from '../../components/lostItem/ColorSelector';
@@ -28,6 +29,7 @@ import {
   lostItemIsRewardOfferedAtom,
   lostItemMainImageAtom,
   lostItemNameAtom,
+  partialLostItemSelector,
 } from '../../stores/lostItem';
 
 const LostItemRegistrationScreen = () => {
@@ -45,10 +47,12 @@ const LostItemRegistrationScreen = () => {
   const hasSpecialCategoryOrColor = useRecoilValue(
     hasSpecialCategoryOrColorSelector,
   );
+  const resetLostItem = useResetRecoilState(partialLostItemSelector);
+  const hasReset = useRef(false);
 
   const handleNavigateToMap = () => {
     if (hasSpecialCategoryOrColor) {
-      // 팝업 모달 표시
+      // 팝업 모달 기능 추가 예정
       console.log(
         '카테고리와 색상을 선택하지 않으면 매칭 리스트를 확인할 수 없어요. 이대로 등록할까요?',
       );
@@ -69,9 +73,43 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
+  const handleReset = useCallback(() => {
+    if (!hasReset.current) {
+      resetLostItem();
+      hasReset.current = true;
+    }
+  }, [resetLostItem]);
+
+  const handleGoBack = useCallback(() => {
+    handleReset();
+    navigation.dispatch(CommonActions.goBack());
+  }, [handleReset, navigation]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        handleGoBack();
+        return true;
+      },
+    );
+
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      if (!hasReset.current) {
+        e.preventDefault();
+        handleGoBack();
+      }
+    });
+
+    return () => {
+      backHandler.remove();
+      unsubscribe();
+    };
+  }, [navigation, handleGoBack]);
+
   return (
     <View style={[screenLayout, styles.container]}>
-      <BackBtnGnbHeader title="분실물 등록" />
+      <BackBtnGnbHeader title="분실물 등록" onPress={handleGoBack} />
       <View style={styles.contentsWrapper}>
         <ImagePicker
           onImagesChange={setImages}
