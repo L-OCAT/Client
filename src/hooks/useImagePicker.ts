@@ -1,5 +1,3 @@
-// hooks/useImagePicker.ts
-
 import {useState} from 'react';
 import {
   ImagePickerResponse,

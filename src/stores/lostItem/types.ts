@@ -129,3 +129,22 @@ export const COLOR_VALUES: Record<ColorOption, string | null> = {
 };
 
 export type SelectedColors = ColorOption[];
+
+export interface RequiredLostItemFields {
+  name: string;
+  category: CategorySelection;
+  colors: SelectedColors;
+  isRewardOffered: boolean;
+  location: string | null;
+}
+
+export interface OptionalLostItemFields {
+  images?: string[];
+  mainImage?: string | null;
+  description?: string;
+}
+
+export type LostItem = RequiredLostItemFields & OptionalLostItemFields;
+
+export type PartialLostItem = Partial<RequiredLostItemFields> &
+  OptionalLostItemFields;

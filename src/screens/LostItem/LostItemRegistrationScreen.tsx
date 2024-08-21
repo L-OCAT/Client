@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -20,47 +21,70 @@ import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
 import {
-  lostItemCategoryAtom,
+  hasSpecialCategoryOrColorSelector,
+  isRequiredFilledSelector,
   lostItemDescriptionAtom,
+  lostItemImagesAtom,
+  lostItemIsRewardOfferedAtom,
+  lostItemMainImageAtom,
   lostItemNameAtom,
-  MainCategory,
 } from '../../stores/lostItem';
 
 const LostItemRegistrationScreen = () => {
+  const navigation = useNavigation();
   const screenLayout = useScreenLayout();
-  const [itemName, setItemName] = useRecoilState(lostItemNameAtom);
+  const [images, setImages] = useRecoilState(lostItemImagesAtom);
+  const [mainImage, setMainImage] = useRecoilState(lostItemMainImageAtom);
+
+  const [lostItemName, setLostItemName] = useRecoilState(lostItemNameAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
-  const category = useRecoilValue(lostItemCategoryAtom);
-  const [isRewardChecked, setIsRewardChecked] = useState(false);
+  const [isRewardOffered, setIsRewardOffered] = useRecoilState(
+    lostItemIsRewardOfferedAtom,
+  );
+  const isRequiredFilled = useRecoilValue(isRequiredFilledSelector);
+  const hasSpecialCategoryOrColor = useRecoilValue(
+    hasSpecialCategoryOrColorSelector,
+  );
 
-  const handleNavigateToMap = () => {};
+  const handleNavigateToMap = () => {
+    if (hasSpecialCategoryOrColor) {
+      // 팝업 모달 표시
+      console.log(
+        '카테고리와 색상을 선택하지 않으면 매칭 리스트를 확인할 수 없어요. 이대로 등록할까요?',
+      );
+    } else {
+      // 지도 스크린으로 이동
+      // navigation.navigate('MapScreen');
+      console.log('Navigate to Map Screen');
+    }
+  };
+  const handleCheckbox = () => {
+    setIsRewardOffered(prev => !prev);
+  };
 
-  const isNextButtonEnabled =
-    category.main === MainCategory.NONE ||
-    (category.main !== null && category.sub !== null);
-
-  const checkedStyle: ViewStyle | null = isRewardChecked
+  const checkedStyle: ViewStyle | null = isRewardOffered
     ? {
         backgroundColor: COLORS.orange.Orange01,
         borderWidth: 0,
       }
     : null;
 
-  const handleCheckbox = () => {
-    setIsRewardChecked(prev => !prev);
-  };
-
   return (
     <View style={[screenLayout, styles.container]}>
       <BackBtnGnbHeader title="분실물 등록" />
       <View style={styles.contentsWrapper}>
-        <ImagePicker />
+        <ImagePicker
+          onImagesChange={setImages}
+          onMainImageChange={setMainImage}
+          maxImages={10}
+          initialImages={images}
+        />
         <View style={styles.textInputWrapper}>
           <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
           <TextInput
             style={textInputStyles.default}
-            value={itemName}
-            onChangeText={setItemName}
+            value={lostItemName}
+            onChangeText={setLostItemName}
             placeholder="물건 이름을 입력해주세요."
             placeholderTextColor={COLORS.gray.Gray03}
           />
@@ -83,7 +107,7 @@ const LostItemRegistrationScreen = () => {
             <Pressable
               onPress={handleCheckbox}
               style={[styles.checkBox, checkedStyle]}>
-              {isRewardChecked && <CheckIcon />}
+              {isRewardOffered && <CheckIcon />}
             </Pressable>
           </View>
           <Text style={[typography.body_02, styles.rewardText]}>
@@ -95,7 +119,7 @@ const LostItemRegistrationScreen = () => {
         <PrimaryLargeBtn
           text="다음"
           onPress={handleNavigateToMap}
-          isDisabled={!isNextButtonEnabled}
+          isDisabled={!isRequiredFilled}
         />
       </View>
     </View>
@@ -142,10 +166,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  checked: {
-    backgroundColor: COLORS.orange.Orange01,
-    borderWidth: 0,
   },
   rewardText: {
     color: COLORS.gray.Gray04,

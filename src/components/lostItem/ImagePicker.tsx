@@ -9,14 +9,34 @@ import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {ms} from '../../lib/utils/dimensions';
 
-const ImagePicker = () => {
+interface ImagePickerProps {
+  onImagesChange?: (images: string[]) => void;
+  onMainImageChange?: (mainImage: string | null) => void;
+  maxImages?: number;
+  initialImages?: string[];
+}
+
+const ImagePicker = ({
+  onImagesChange,
+  onMainImageChange,
+  maxImages = 10,
+  initialImages = [],
+}: ImagePickerProps) => {
   const {
     images,
     mainImage,
     handleImageSelect,
     handleImageDelete,
     handleSetMainImage,
-  } = useImagePicker({maxImages: 10});
+  } = useImagePicker({maxImages, initialImages});
+
+  React.useEffect(() => {
+    onImagesChange?.(images);
+  }, [images, onImagesChange]);
+
+  React.useEffect(() => {
+    onMainImageChange?.(mainImage);
+  }, [mainImage, onMainImageChange]);
 
   const imageCounting =
     images.length > 0 ? `${images.length}/10` : `50mb 이하의${'\n'}PNG,JPG`;
