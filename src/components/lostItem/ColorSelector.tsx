@@ -26,7 +26,7 @@ const ColorSelector = () => {
   return (
     <Pressable style={styles.container} onPress={handlePress}>
       <View style={styles.textWrapper}>
-        <Text style={[typography.body_02_SB, styles.label]}>색상</Text>
+        <Text style={[typography.body_02_SB, styles.label]}>색상*</Text>
         {colorText && (
           <Text style={[typography.body_02_SB, styles.value]}>{colorText}</Text>
         )}

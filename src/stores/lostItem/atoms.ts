@@ -33,8 +33,3 @@ export const lostItemDescriptionAtom = atom<string>({
   key: 'lostItemDescriptionAtom',
   default: '',
 });
-
-export const isRewardOfferedAtom = atom<boolean>({
-  key: 'isRewardOfferedAtom',
-  default: false,
-});

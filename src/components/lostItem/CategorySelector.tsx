@@ -27,7 +27,7 @@ const CategorySelector = () => {
   return (
     <Pressable style={styles.container} onPress={handlePress}>
       <View style={styles.textWrapper}>
-        <Text style={[typography.body_02_SB, styles.label]}>카테고리</Text>
+        <Text style={[typography.body_02_SB, styles.label]}>카테고리*</Text>
         {categoryText && (
           <Text style={[typography.body_02_SB, styles.value]}>
             {categoryText}
