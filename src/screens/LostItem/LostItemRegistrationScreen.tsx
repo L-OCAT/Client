@@ -1,7 +1,6 @@
-import {CommonActions, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
-  BackHandler,
   Pressable,
   StyleSheet,
   Text,
@@ -16,6 +15,7 @@ import ColorSelector from '../../components/lostItem/ColorSelector';
 import ImagePicker from '../../components/lostItem/ImagePicker';
 import {PrimaryLargeBtn} from '../../components/public/Buttons';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
+import {useResetOnBackNavigation} from '../../hooks/useResetStateOnBackNavigation';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
@@ -48,7 +48,7 @@ const LostItemRegistrationScreen = () => {
     hasSpecialCategoryOrColorSelector,
   );
   const resetLostItem = useResetRecoilState(partialLostItemSelector);
-  const hasReset = useRef(false);
+  const handleGoBackWithResetState = useResetOnBackNavigation(resetLostItem);
 
   const handleNavigateToMap = () => {
     if (hasSpecialCategoryOrColor) {
@@ -73,43 +73,12 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
-  const handleReset = useCallback(() => {
-    if (!hasReset.current) {
-      resetLostItem();
-      hasReset.current = true;
-    }
-  }, [resetLostItem]);
-
-  const handleGoBack = useCallback(() => {
-    handleReset();
-    navigation.dispatch(CommonActions.goBack());
-  }, [handleReset, navigation]);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        handleGoBack();
-        return true;
-      },
-    );
-
-    const unsubscribe = navigation.addListener('beforeRemove', e => {
-      if (!hasReset.current) {
-        e.preventDefault();
-        handleGoBack();
-      }
-    });
-
-    return () => {
-      backHandler.remove();
-      unsubscribe();
-    };
-  }, [navigation, handleGoBack]);
-
   return (
     <View style={[screenLayout, styles.container]}>
-      <BackBtnGnbHeader title="분실물 등록" onPress={handleGoBack} />
+      <BackBtnGnbHeader
+        title="분실물 등록"
+        onPress={handleGoBackWithResetState}
+      />
       <View style={styles.contentsWrapper}>
         <ImagePicker
           onImagesChange={setImages}
