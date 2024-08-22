@@ -11,6 +11,8 @@ import {
 } from './atoms';
 import {ColorOption, LostItem, MainCategory, PartialLostItem} from './types';
 
+// 모든 분실물 관련 atom들을 하나의 객체로 모아주는 selector
+// 이 selector를 통해 모든 분실물 정보를 한 번에 가져오거나 설정할 수 있음
 export const partialLostItemSelector = selector<PartialLostItem>({
   key: 'partialLostItemSelector',
   get: ({get}) => ({
@@ -53,6 +55,8 @@ export const partialLostItemSelector = selector<PartialLostItem>({
   },
 });
 
+// 필수입력 항목들이 모두 채워졌는지 확인하는 selector
+// 분실물 등록 스크린에서 "다음"버튼 활성화 여부를 결정하는 데 사용
 export const isRequiredFilledSelector = selector<boolean>({
   key: 'isRequiredFilledSelector',
   get: ({get}) => {
@@ -71,6 +75,8 @@ export const isRequiredFilledSelector = selector<boolean>({
   },
 });
 
+// 특별한 카테고리("해당없음")나 색상("기타")이 선택되었는지 확인하는 selector
+// 이 경우 사용자에게 팝업 모달을 통해 안내 예정
 export const hasSpecialCategoryOrColorSelector = selector<boolean>({
   key: 'hasSpecialCategoryOrColorSelector',
   get: ({get}) => {
@@ -83,6 +89,8 @@ export const hasSpecialCategoryOrColorSelector = selector<boolean>({
   },
 });
 
+// 모든 필수 정보(위치 포함)가 입력되었는지 확인하는 selector
+// 최종적으로 분실물 정보가 완전한지 확인하는 데 사용
 export const isLostItemCompleteSelector = selector<boolean>({
   key: 'isLostItemCompleteSelector',
   get: ({get}) => {
@@ -93,6 +101,8 @@ export const isLostItemCompleteSelector = selector<boolean>({
   },
 });
 
+// 완전하고 유효한 분실물 정보를 제공하는 selector
+// 백엔드로 분실물 정보를 보내기 전 최종 확인에 사용
 export const completeLostItemSelector = selector<LostItem | null>({
   key: 'completeLostItemSelector',
   get: ({get}) => {
