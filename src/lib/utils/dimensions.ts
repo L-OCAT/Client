@@ -25,3 +25,6 @@ const BASE_SAFEAREABOTTOM = 34;
 
 export const topWithSafeArea = (top: number) =>
   isIOS ? ms(top) : ms(top - BASE_SAFEAREATOP);
+
+export const bottomWithSafeArea = (bottom: number) =>
+  isIOS ? ms(bottom) + BASE_SAFEAREABOTTOM : ms(bottom);

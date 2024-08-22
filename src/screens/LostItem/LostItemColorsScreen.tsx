@@ -7,7 +7,7 @@ import {CloseBtnGnbHeader} from '../../components/public/GnbHeader';
 import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
-import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
+import {bottomWithSafeArea, ms} from '../../lib/utils/dimensions';
 import {lostItemColorsAtom} from '../../stores/lostItem';
 import {COLOR_VALUES, ColorOption} from '../../stores/lostItem/types';
 
@@ -151,9 +151,7 @@ const styles = StyleSheet.create({
   },
   btnBox: {
     position: 'absolute',
-    top: topWithSafeArea(746),
-    left: 0,
-    right: 0,
+    bottom: bottomWithSafeArea(10),
   },
 });
 

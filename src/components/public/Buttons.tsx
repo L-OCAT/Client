@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   [ButtonSize.LG]: {
-    width: ms(SCREEN_WIDTH - 32),
+    width: SCREEN_WIDTH - ms(32),
     height: ms(56),
     marginHorizontal: ms(16),
     borderRadius: 8,

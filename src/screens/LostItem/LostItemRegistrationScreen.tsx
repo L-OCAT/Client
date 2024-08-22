@@ -20,7 +20,7 @@ import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
-import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
+import {bottomWithSafeArea, ms} from '../../lib/utils/dimensions';
 import {
   hasSpecialCategoryOrColorSelector,
   isRequiredFilledSelector,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   btnBox: {
     position: 'absolute',
-    top: topWithSafeArea(746),
+    bottom: bottomWithSafeArea(10),
   },
   rewardWrapper: {
     flexDirection: 'row',
