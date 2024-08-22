@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import FoundItemRegistrationScreen from '../../screens/FoundItem/FoundItemRegistrationScreen';
+import FoundItemRegistrationScreen from '../../screens/foundItem/FoundItemRegistrationScreen';
 import {FoundItemStackParamList} from '../types';
 
 const FoundItemStack = createStackNavigator<FoundItemStackParamList>();

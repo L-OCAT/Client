@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {COLORS} from '../../lib/styles/theme';
 import {getBottomTabOptions} from '../../lib/utils/bottom-tab-helper';
 import {ms} from '../../lib/utils/dimensions';
-import HomeScreen from '../../screens/Home/HomeScreen';
+import HomeScreen from '../../screens/home/HomeScreen';
 import {BottomTabParamList} from '../types';
 import MapStackNavigator from './MapStackNavigator';
 import MyPageStackNavigator from './MyPageStackNavigator';
