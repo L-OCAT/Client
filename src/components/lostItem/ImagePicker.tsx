@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: ms(10),
     gap: ms(7),
-    marginVertical: ms(11),
+    marginTop: ms(7),
+    marginBottom: ms(15),
     alignItems: 'center',
   },
   addButton: {
