@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -11,6 +11,12 @@ import {
   ViewStyle,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRecoilState, useRecoilValue, useResetRecoilState} from 'recoil';
 import CheckIcon from '../../assets/svg/icon_check.svg';
@@ -42,13 +48,14 @@ const DETAIL_TEXTINPUT_HEIGHT = 140;
 const LostItemRegistrationScreen = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [btnBottom, setBtnBottom] = useState(10);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [images, setImages] = useRecoilState(lostItemImagesAtom);
   const [mainImage, setMainImage] = useRecoilState(lostItemMainImageAtom);
 
   const [lostItemName, setLostItemName] = useRecoilState(lostItemNameAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
+  const [btnBottom, setBtnBottom] = useState(10);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const btnBottomAnimated = useSharedValue(10);
   const [isRewardOffered, setIsRewardOffered] = useRecoilState(
     lostItemIsRewardOfferedAtom,
   );
@@ -82,18 +89,26 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
+  const updateBtnBottom = useCallback((value: number) => {
+    setBtnBottom(value);
+  }, []);
+
   useEffect(() => {
     const keyboardWillShowListener = Keyboard.addListener(
       isIOS ? 'keyboardWillShow' : 'keyboardDidShow',
       e => {
-        setBtnBottom(e.endCoordinates.height - insets.bottom + 10);
+        const newBtnBottom = e.endCoordinates.height - insets.bottom + 10;
+        runOnJS(updateBtnBottom)(newBtnBottom);
+        btnBottomAnimated.value = withTiming(newBtnBottom, {duration: 250});
         setKeyboardHeight(e.endCoordinates.height);
       },
     );
     const keyboardWillHideListener = Keyboard.addListener(
       isIOS ? 'keyboardWillHide' : 'keyboardDidHide',
       () => {
-        setBtnBottom(10), setKeyboardHeight(0);
+        runOnJS(updateBtnBottom)(10);
+        btnBottomAnimated.value = withTiming(10, {duration: 250});
+        setKeyboardHeight(0);
       },
     );
 
@@ -101,12 +116,18 @@ const LostItemRegistrationScreen = () => {
       keyboardWillShowListener.remove();
       keyboardWillHideListener.remove();
     };
-  }, []);
+  }, [insets.bottom, updateBtnBottom]);
 
+  const animatedBtnStyle = useAnimatedStyle(() => {
+    return {
+      transform: isIOS
+        ? [{translateY: -btnBottomAnimated.value + 10}]
+        : undefined,
+    };
+  });
   const extraScrollHeight = isIOS
     ? btnBottom - keyboardHeight + DETAIL_TEXTINPUT_HEIGHT
     : BTN_HEIGHT;
-
   return (
     <SafeAreaView style={styles.container}>
       <BackBtnGnbHeader
@@ -114,9 +135,9 @@ const LostItemRegistrationScreen = () => {
         onPress={handleGoBackWithResetState}
       />
       <KeyboardAwareScrollView
-        style={{flex: 1}}
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
         enableOnAndroid={true}
-        contentContainerStyle={{flexGrow: 1}}
         extraScrollHeight={extraScrollHeight}>
         <View style={styles.contentsWrapper}>
           <ImagePicker
@@ -125,7 +146,7 @@ const LostItemRegistrationScreen = () => {
             maxImages={10}
             initialImages={images}
           />
-          <View style={styles.textInputWrapper}>
+          <View style={styles.contentsWrapper}>
             <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
             <TextInput
               style={textInputStyles.default}
@@ -162,21 +183,13 @@ const LostItemRegistrationScreen = () => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <View
-        style={[
-          styles.btnBox,
-          {
-            bottom: isIOS
-              ? bottomWithSafeArea(btnBottom)
-              : bottomWithSafeArea(10),
-          },
-        ]}>
+      <Animated.View style={[styles.btnBox, animatedBtnStyle]}>
         <PrimaryLargeBtn
           text="다음"
           onPress={handleNavigateToMap}
           isDisabled={!isRequiredFilled}
         />
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 };
@@ -186,6 +199,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     gap: ms(12),
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   contentsWrapper: {
     paddingHorizontal: ms(16),
