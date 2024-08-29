@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {
   PrimaryLargeBtn,
   TertiaryMediumBtn,
@@ -13,11 +13,9 @@ import {COLORS} from '../../lib/styles/theme';
 //svg
 import ProfileImg from '../../assets/svg/defaultProfile.svg';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {ms} from '../../lib/utils/dimensions';
 
 const ProfileScreen = () => {
-  const screenLayout = useScreenLayout();
   const [isValid, setIsValid] = useState(false);
   const [nickname, setNickname] = useState('');
 
@@ -41,7 +39,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={[styles.container, screenLayout]}>
+    <SafeAreaView style={styles.container}>
       <View>
         <BackBtnGnbHeader title="프로필 설정" />
         <Text style={{color: 'black'}}>프로필과 닉네임을 설정해주세요</Text>
@@ -73,7 +71,7 @@ const ProfileScreen = () => {
         onPress={handleNextPage}
         isDisabled={!isValid}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

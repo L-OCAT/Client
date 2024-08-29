@@ -1,6 +1,6 @@
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {isIOS} from '../../lib/utils';
 
 // svg
@@ -25,7 +25,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Logo style={styles.logo} />
       <Pressable style={[styles.btn, styles.kakaoBtn]} onPress={kakaoLogin}>
         <KakaoIcon />
@@ -38,7 +38,7 @@ const LoginScreen = () => {
           <Text style={[styles.btnText, styles.appleBtnText]}>애플 로그인</Text>
         </Pressable>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

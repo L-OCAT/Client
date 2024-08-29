@@ -1,10 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useMemo, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {useRecoilState} from 'recoil';
 import {PrimaryLargeBtn} from '../../components/public/Buttons';
 import {CloseBtnGnbHeader} from '../../components/public/GnbHeader';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {bottomWithSafeArea, ms} from '../../lib/utils/dimensions';
@@ -13,7 +19,6 @@ import {COLOR_VALUES, ColorOption} from '../../stores/lostItem/types';
 
 const LostItemColorsScreen = () => {
   const navigation = useNavigation();
-  const screenLayout = useScreenLayout();
   const [colors, setColors] = useRecoilState(lostItemColorsAtom);
   const [selectedColors, setSelectedColors] = useState<ColorOption[]>(colors);
 
@@ -70,7 +75,7 @@ const LostItemColorsScreen = () => {
   };
 
   return (
-    <View style={[screenLayout, styles.container]}>
+    <SafeAreaView style={styles.container}>
       <CloseBtnGnbHeader title="색상" />
       <Text style={[typography.subTitle_02, styles.title]}>
         최대 2가지 색상 선택이 가능해요
@@ -90,13 +95,14 @@ const LostItemColorsScreen = () => {
           isDisabled={!isComplete}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   title: {
     marginVertical: ms(16),

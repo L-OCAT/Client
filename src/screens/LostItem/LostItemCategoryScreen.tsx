@@ -1,10 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useMemo, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {useRecoilState} from 'recoil';
 import {PrimaryLargeBtn} from '../../components/public/Buttons';
 import {CloseBtnGnbHeader} from '../../components/public/GnbHeader';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {
@@ -21,7 +27,6 @@ import {
 
 const LostItemCategoryScreen = () => {
   const navigation = useNavigation();
-  const screenLayout = useScreenLayout();
   const [category, setCategory] = useRecoilState(lostItemCategoryAtom);
   const [selectedMain, setSelectedMain] = useState<MainCategory | null>(
     category.main,
@@ -87,7 +92,7 @@ const LostItemCategoryScreen = () => {
   }, [category]);
 
   return (
-    <View style={[screenLayout, styles.container]}>
+    <SafeAreaView style={styles.container}>
       <CloseBtnGnbHeader title="카테고리" />
       <Text style={[typography.subTitle_02, styles.title]}>카테고리 선택</Text>
       <View style={styles.categoryContainer}>
@@ -116,13 +121,14 @@ const LostItemCategoryScreen = () => {
           isDisabled={!isComplete}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   title: {
     position: 'absolute',

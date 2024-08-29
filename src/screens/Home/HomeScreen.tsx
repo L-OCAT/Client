@@ -1,13 +1,12 @@
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 
 import FastImage from 'react-native-fast-image';
 import RightIcon from '../../assets/svg/icon_right.svg';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
 import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
 import {
   BottomTabParamList,
@@ -21,7 +20,6 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-  const screenLayout = useScreenLayout();
 
   const handleNavigateToLostItem = () => {
     navigation.navigate('LostItemStack', {screen: 'LostItemRegistration'});
@@ -36,7 +34,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={[screenLayout, styles.container]}>
+    <SafeAreaView style={styles.container}>
       <Text style={[typography.subTitle_01, styles.titleText]}>
         00님의 소중한 물건,{'\n'}
         LOCAT에서 찾아요!
@@ -104,7 +102,7 @@ const HomeScreen = () => {
           </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
