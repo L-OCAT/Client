@@ -146,16 +146,15 @@ const LostItemRegistrationScreen = () => {
             maxImages={10}
             initialImages={images}
           />
-          <View style={styles.contentsWrapper}>
-            <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
-            <TextInput
-              style={textInputStyles.default}
-              value={lostItemName}
-              onChangeText={setLostItemName}
-              placeholder="물건 이름을 입력해주세요."
-              placeholderTextColor={COLORS.gray.Gray03}
-            />
-          </View>
+          <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
+          <TextInput
+            style={textInputStyles.default}
+            value={lostItemName}
+            onChangeText={setLostItemName}
+            placeholder="물건 이름을 입력해주세요."
+            placeholderTextColor={COLORS.gray.Gray03}
+          />
+
           <CategorySelector />
           <ColorSelector />
           <View style={styles.textInputWrapper}>
