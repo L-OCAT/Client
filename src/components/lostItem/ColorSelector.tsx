@@ -12,10 +12,7 @@ const ColorSelector = () => {
   const navigation = useNavigation<MainStackNavigationProp>();
   const colors = useRecoilValue(lostItemColorsAtom);
 
-  const getColorText = () => {
-    if (colors.length === 0) return null;
-    return colors.join(', ');
-  };
+  const getColorText = () => (colors.length ? colors.join(', ') : null);
 
   const handlePress = () => {
     navigation.navigate('LostItemStack', {screen: 'LostItemColors'});
