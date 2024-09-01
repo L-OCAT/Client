@@ -17,9 +17,10 @@ const CategorySelector = () => {
   };
 
   const getCategoryText = () => {
-    if (!category.main) return null;
-    if (!category.sub) return category.main;
-    return `${category.main}>${category.sub}`;
+    const {main, sub} = category;
+    if (main && sub) return `${main}>${sub}`;
+    else if (main && !sub) return main;
+    return null;
   };
 
   const categoryText = getCategoryText();
