@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import LostItemRegistrationScreen from '../../screens/LostItem/LostItemRegistrationScreen';
+import LostItemRegistrationScreen from '../../screens/lostItem/LostItemRegistrationScreen';
 import {LostItemStackParamList} from '../types';
 
 const LostItemStack = createStackNavigator<LostItemStackParamList>();
