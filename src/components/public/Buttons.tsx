@@ -39,12 +39,17 @@ const Button = ({
     styles[size],
     ...(type === ButtonType.PRIMARY && isDisabled
       ? [styles.disabledPrimary]
+      : type === ButtonType.TERTIARY && isDisabled
+      ? [styles.disabledTertiary]
       : []),
   ];
 
   const buttonTextStyles: TextStyle[] = [
     styles.btnText,
     ...(textStyle ? [textStyle] : []),
+    ...(type === ButtonType.TERTIARY && isDisabled
+      ? [styles.disabledTertiaryText]
+      : [])
   ];
 
   return (
@@ -124,4 +129,10 @@ const styles = StyleSheet.create({
   disabledPrimary: {
     backgroundColor: COLORS.orange.Orange02,
   },
+  disabledTertiary: {
+    backgroundColor: COLORS.gray.Gray01,
+  },
+  disabledTertiaryText: {
+    color: COLORS.gray.Gray02
+  }
 });

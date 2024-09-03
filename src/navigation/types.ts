@@ -2,9 +2,17 @@ import {NavigatorScreenParams} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  AuthStack: undefined;
+  AuthStack: NavigatorScreenParams<AuthStackParamList>;
   MainStack: NavigatorScreenParams<MainStackParamList>;
 };
+
+export type AuthStackParamList = {
+  Login: undefined;
+  Email: undefined;
+  Profile: undefined;
+};
+
+export type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
 
 export type MainStackParamList = {
   BottomTab: NavigatorScreenParams<BottomTabParamList>;
