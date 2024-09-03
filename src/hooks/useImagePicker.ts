@@ -4,71 +4,30 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 
-interface UseImagePickerOptions {
-  maxImages?: number;
-  initialImages?: string[];
-  singleImage?: boolean;
-}
-
-export const useImagePicker = ({
-  maxImages = 10,
-  initialImages = [],
-  singleImage = false,
-}: UseImagePickerOptions = {}) => {
-  const [images, setImages] = useState<string[]>(initialImages);
-  const [mainImage, setMainImage] = useState<string | null>(
-    initialImages[0] || null,
-  );
+export const useImagePicker = () => {
+  const [image, setImage] = useState<string>('');
 
   const handleImageSelect = () => {
     launchImageLibrary(
-      {
-        mediaType: 'photo',
-        selectionLimit: singleImage ? 1 : maxImages - images.length,
-      },
+      {mediaType: 'photo'},
       (response: ImagePickerResponse) => {
-        if (response.assets) {
-          const newImages = response.assets.map(asset => asset.uri as string);
-          if (singleImage) {
-            setImages(newImages);
-            setMainImage(newImages[0] || null);
-          } else {
-            const updatedImages = [...images, ...newImages].slice(0, maxImages);
-            setImages(updatedImages);
-            if (!mainImage && updatedImages.length > 0) {
-              setMainImage(updatedImages[0]);
-            }
-          }
+        if (
+          response.assets &&
+          response.assets.length > 0 &&
+          response.assets[0].uri
+        ) {
+          const newImage = response.assets[0].uri;
+          setImage(newImage);
         }
       },
     );
   };
 
-  const handleImageDelete = (index: number) => {
-    if (singleImage) {
-      setImages([]);
-      setMainImage(null);
-    } else {
-      const updatedImages = images.filter((_, i) => i !== index);
-      setImages(updatedImages);
-      if (mainImage === images[index]) {
-        setMainImage(updatedImages[0] || null);
-      }
-    }
-  };
-
-  const handleSetMainImage = (image: string) => {
-    if (!singleImage) {
-      setMainImage(image);
-    }
-  };
+  const handleImageDelete = () => setImage('');
 
   return {
-    images,
-    mainImage,
+    image,
     handleImageSelect,
     handleImageDelete,
-    handleSetMainImage,
-    isSingleImage: singleImage,
   };
 };

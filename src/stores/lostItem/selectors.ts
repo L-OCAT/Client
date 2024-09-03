@@ -3,10 +3,9 @@ import {
   lostItemCategoryAtom,
   lostItemColorsAtom,
   lostItemDescriptionAtom,
-  lostItemImagesAtom,
+  lostItemImageAtom,
   lostItemIsRewardOfferedAtom,
   lostItemLocationAtom,
-  lostItemMainImageAtom,
   lostItemNameAtom,
 } from './atoms';
 import {ColorOption, LostItem, MainCategory, PartialLostItem} from './types';
@@ -16,8 +15,7 @@ import {ColorOption, LostItem, MainCategory, PartialLostItem} from './types';
 export const partialLostItemSelector = selector<PartialLostItem>({
   key: 'partialLostItemSelector',
   get: ({get}) => ({
-    images: get(lostItemImagesAtom),
-    mainImage: get(lostItemMainImageAtom),
+    image: get(lostItemImageAtom),
     name: get(lostItemNameAtom),
     category: get(lostItemCategoryAtom),
     colors: get(lostItemColorsAtom),
@@ -27,8 +25,7 @@ export const partialLostItemSelector = selector<PartialLostItem>({
   }),
   set: ({set}, newValue) => {
     if (newValue instanceof DefaultValue) {
-      set(lostItemImagesAtom, []);
-      set(lostItemMainImageAtom, null);
+      set(lostItemImageAtom, '');
       set(lostItemNameAtom, '');
       set(lostItemCategoryAtom, {main: null, sub: null});
       set(lostItemColorsAtom, []);
@@ -36,10 +33,7 @@ export const partialLostItemSelector = selector<PartialLostItem>({
       set(lostItemIsRewardOfferedAtom, false);
       set(lostItemLocationAtom, null);
     } else {
-      if (newValue.images !== undefined)
-        set(lostItemImagesAtom, newValue.images);
-      if (newValue.mainImage !== undefined)
-        set(lostItemMainImageAtom, newValue.mainImage);
+      if (newValue.image !== undefined) set(lostItemImageAtom, newValue.image);
       if (newValue.name !== undefined) set(lostItemNameAtom, newValue.name);
       if (newValue.category !== undefined)
         set(lostItemCategoryAtom, newValue.category);
@@ -119,8 +113,7 @@ export const completeLostItemSelector = selector<LostItem | null>({
       colors: partialItem.colors!,
       isRewardOffered: partialItem.isRewardOffered!,
       location: partialItem.location!,
-      images: partialItem.images || [],
-      mainImage: partialItem.mainImage || null,
+      image: partialItem.image || '',
       description: partialItem.description || '',
     };
   },

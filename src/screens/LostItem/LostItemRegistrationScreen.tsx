@@ -35,9 +35,8 @@ import {
   hasSpecialCategoryOrColorSelector,
   isRequiredFilledSelector,
   lostItemDescriptionAtom,
-  lostItemImagesAtom,
+  lostItemImageAtom,
   lostItemIsRewardOfferedAtom,
-  lostItemMainImageAtom,
   lostItemNameAtom,
   partialLostItemSelector,
 } from '../../stores/lostItem';
@@ -48,8 +47,7 @@ const DETAIL_TEXTINPUT_HEIGHT = 140;
 const LostItemRegistrationScreen = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [images, setImages] = useRecoilState(lostItemImagesAtom);
-  const [mainImage, setMainImage] = useRecoilState(lostItemMainImageAtom);
+  const [image, setImage] = useRecoilState(lostItemImageAtom);
 
   const [lostItemName, setLostItemName] = useRecoilState(lostItemNameAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
@@ -140,12 +138,7 @@ const LostItemRegistrationScreen = () => {
         enableOnAndroid={true}
         extraScrollHeight={extraScrollHeight}>
         <View style={styles.contentsWrapper}>
-          <ImagePicker
-            onImagesChange={setImages}
-            onMainImageChange={setMainImage}
-            maxImages={10}
-            initialImages={images}
-          />
+          <ImagePicker onImageChange={setImage} />
           <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
           <TextInput
             style={textInputStyles.default}

@@ -139,8 +139,7 @@ export interface RequiredLostItemFields {
 }
 
 export interface OptionalLostItemFields {
-  images?: string[];
-  mainImage?: string | null;
+  image: string;
   description?: string;
 }
 

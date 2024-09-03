@@ -6,14 +6,9 @@ export const lostItemNameAtom = atom<string>({
   default: '',
 });
 
-export const lostItemImagesAtom = atom<string[]>({
-  key: 'lostItemImagesAtom',
-  default: [],
-});
-
-export const lostItemMainImageAtom = atom<string | null>({
-  key: 'lostItemMainImageAtom',
-  default: null,
+export const lostItemImageAtom = atom<string>({
+  key: 'lostItemImageAtom',
+  default: '',
 });
 
 export const lostItemCategoryAtom = atom<CategorySelection>({
