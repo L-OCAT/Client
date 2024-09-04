@@ -1,23 +1,17 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
-  Keyboard,
+  KeyboardAvoidingView,
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
   ViewStyle,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {AvoidSoftInput} from 'react-native-avoid-softinput';
 import {useRecoilState, useRecoilValue, useResetRecoilState} from 'recoil';
 import CheckIcon from '../../assets/svg/icon_check.svg';
 import CategorySelector from '../../components/lostItem/CategorySelector';
@@ -30,7 +24,7 @@ import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 import {isIOS} from '../../lib/utils';
-import {bottomWithSafeArea, ms} from '../../lib/utils/dimensions';
+import {ms} from '../../lib/utils/dimensions';
 import {
   hasSpecialCategoryOrColorSelector,
   isRequiredFilledSelector,
@@ -41,19 +35,11 @@ import {
   partialLostItemSelector,
 } from '../../stores/lostItem';
 
-const BTN_HEIGHT = 56;
-const DETAIL_TEXTINPUT_HEIGHT = 140;
-
 const LostItemRegistrationScreen = () => {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
   const [image, setImage] = useRecoilState(lostItemImageAtom);
-
   const [lostItemName, setLostItemName] = useRecoilState(lostItemNameAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
-  const [btnBottom, setBtnBottom] = useState(10);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const btnBottomAnimated = useSharedValue(10);
   const [isRewardOffered, setIsRewardOffered] = useRecoilState(
     lostItemIsRewardOfferedAtom,
   );
@@ -87,101 +73,73 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
-  const updateBtnBottom = useCallback((value: number) => {
-    setBtnBottom(value);
+  //안드로이드는 기본 KeyboardAvoidingView만으로도 정상 작동
+  const onFocusEffect = React.useCallback(() => {
+    AvoidSoftInput.setAvoidOffset(-140);
+    AvoidSoftInput.setEnabled(true);
+    return () => {
+      AvoidSoftInput.setEnabled(false);
+    };
   }, []);
 
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener(
-      isIOS ? 'keyboardWillShow' : 'keyboardDidShow',
-      e => {
-        const newBtnBottom = e.endCoordinates.height - insets.bottom + 10;
-        runOnJS(updateBtnBottom)(newBtnBottom);
-        btnBottomAnimated.value = withTiming(newBtnBottom, {duration: 250});
-        setKeyboardHeight(e.endCoordinates.height);
-      },
-    );
-    const keyboardWillHideListener = Keyboard.addListener(
-      isIOS ? 'keyboardWillHide' : 'keyboardDidHide',
-      () => {
-        runOnJS(updateBtnBottom)(10);
-        btnBottomAnimated.value = withTiming(10, {duration: 250});
-        setKeyboardHeight(0);
-      },
-    );
+  isIOS && useFocusEffect(onFocusEffect);
 
-    return () => {
-      keyboardWillShowListener.remove();
-      keyboardWillHideListener.remove();
-    };
-  }, [insets.bottom, updateBtnBottom]);
-
-  const animatedBtnStyle = useAnimatedStyle(() => {
-    return {
-      transform: isIOS
-        ? [{translateY: -btnBottomAnimated.value + 10}]
-        : undefined,
-    };
-  });
-  const extraScrollHeight = isIOS
-    ? btnBottom - keyboardHeight + DETAIL_TEXTINPUT_HEIGHT
-    : BTN_HEIGHT;
   return (
     <SafeAreaView style={styles.container}>
-      <BackBtnGnbHeader
-        title="분실물 등록"
-        onPress={handleGoBackWithResetState}
-      />
-      <KeyboardAwareScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        enableOnAndroid={true}
-        extraScrollHeight={extraScrollHeight}>
-        <View style={styles.contentsWrapper}>
-          <ImagePicker onImageChange={setImage} />
-          <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
-          <TextInput
-            style={textInputStyles.default}
-            value={lostItemName}
-            onChangeText={setLostItemName}
-            placeholder="물건 이름을 입력해주세요."
-            placeholderTextColor={COLORS.gray.Gray03}
-          />
-
-          <CategorySelector />
-          <ColorSelector />
-          <View style={styles.textInputWrapper}>
-            <Text style={[typography.body_02_B, styles.label]}>상세설명</Text>
-            <TextInput
-              style={textInputStyles.detailDescription}
-              value={description}
-              onChangeText={setDescription}
-              placeholder="잃어버린 물건의 특징을 상세하게 작성해주세요."
-              placeholderTextColor={COLORS.gray.Gray03}
-              multiline
-            />
-          </View>
-          <View style={styles.rewardWrapper}>
-            <View style={styles.checkBoxWrapper}>
-              <Pressable
-                onPress={handleCheckbox}
-                style={[styles.checkBox, checkedStyle]}>
-                {isRewardOffered && <CheckIcon />}
-              </Pressable>
-            </View>
-            <Text style={[typography.body_02, styles.rewardText]}>
-              보상금 지급 의사
-            </Text>
-          </View>
-        </View>
-      </KeyboardAwareScrollView>
-      <Animated.View style={[styles.btnBox, animatedBtnStyle]}>
-        <PrimaryLargeBtn
-          text="다음"
-          onPress={handleNavigateToMap}
-          isDisabled={!isRequiredFilled}
+      <KeyboardAvoidingView
+        style={styles.flexBox}
+        behavior={isIOS ? 'padding' : undefined}>
+        <BackBtnGnbHeader
+          title="분실물 등록"
+          onPress={handleGoBackWithResetState}
         />
-      </Animated.View>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.contentsWrapper}>
+            <ImagePicker onImageChange={setImage} />
+            <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
+            <TextInput
+              style={textInputStyles.default}
+              value={lostItemName}
+              onChangeText={setLostItemName}
+              placeholder="물건 이름을 입력해주세요."
+              placeholderTextColor={COLORS.gray.Gray03}
+            />
+            <CategorySelector />
+            <ColorSelector />
+            <View style={styles.textInputWrapper}>
+              <Text style={[typography.body_02_B, styles.label]}>상세설명</Text>
+              <TextInput
+                style={textInputStyles.detailDescription}
+                value={description}
+                onChangeText={setDescription}
+                placeholder="잃어버린 물건의 특징을 상세하게 작성해주세요."
+                placeholderTextColor={COLORS.gray.Gray03}
+                multiline
+                scrollEnabled={false}
+              />
+            </View>
+            <View style={styles.rewardWrapper}>
+              <View style={styles.checkBoxWrapper}>
+                <Pressable
+                  onPress={handleCheckbox}
+                  style={[styles.checkBox, checkedStyle]}>
+                  {isRewardOffered && <CheckIcon />}
+                </Pressable>
+              </View>
+              <Text style={[typography.body_02, styles.rewardText]}>
+                보상금 지급 의사
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+        <View style={styles.btnBox}>
+          <PrimaryLargeBtn
+            text="다음"
+            onPress={handleNavigateToMap}
+            isDisabled={!isRequiredFilled}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -192,7 +150,7 @@ const styles = StyleSheet.create({
     gap: ms(12),
     flex: 1,
   },
-  scrollView: {
+  flexBox: {
     flex: 1,
   },
   scrollContent: {
@@ -200,6 +158,7 @@ const styles = StyleSheet.create({
   },
   contentsWrapper: {
     paddingHorizontal: ms(16),
+    flex: 1,
   },
   textInputWrapper: {
     paddingVertical: ms(12),
@@ -209,8 +168,7 @@ const styles = StyleSheet.create({
     color: COLORS.gray.Gray05,
   },
   btnBox: {
-    position: 'absolute',
-    bottom: bottomWithSafeArea(10),
+    paddingVertical: 10,
   },
   rewardWrapper: {
     flexDirection: 'row',
