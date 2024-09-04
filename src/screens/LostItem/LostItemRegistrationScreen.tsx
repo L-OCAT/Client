@@ -1,7 +1,6 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
-  KeyboardAvoidingView,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -11,7 +10,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {AvoidSoftInput} from 'react-native-avoid-softinput';
 import {useRecoilState, useRecoilValue, useResetRecoilState} from 'recoil';
 import CheckIcon from '../../assets/svg/icon_check.svg';
 import CategorySelector from '../../components/lostItem/CategorySelector';
@@ -19,11 +17,11 @@ import ColorSelector from '../../components/lostItem/ColorSelector';
 import ImagePicker from '../../components/lostItem/ImagePicker';
 import {PrimaryLargeBtn} from '../../components/public/Buttons';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
+import {KeyboardAvoidingWrapper} from '../../components/public/KeyboardAvoidingWrapper';
 import {useResetOnBackNavigation} from '../../hooks/useResetStateOnBackNavigation';
 import {textInputStyles} from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
-import {isIOS} from '../../lib/utils';
 import {ms} from '../../lib/utils/dimensions';
 import {
   hasSpecialCategoryOrColorSelector,
@@ -73,22 +71,9 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
-  //안드로이드는 기본 KeyboardAvoidingView만으로도 정상 작동
-  const onFocusEffect = React.useCallback(() => {
-    AvoidSoftInput.setAvoidOffset(-140);
-    AvoidSoftInput.setEnabled(true);
-    return () => {
-      AvoidSoftInput.setEnabled(false);
-    };
-  }, []);
-
-  isIOS && useFocusEffect(onFocusEffect);
-
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.flexBox}
-        behavior={isIOS ? 'padding' : undefined}>
+      <KeyboardAvoidingWrapper>
         <BackBtnGnbHeader
           title="분실물 등록"
           onPress={handleGoBackWithResetState}
@@ -96,14 +81,16 @@ const LostItemRegistrationScreen = () => {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.contentsWrapper}>
             <ImagePicker onImageChange={setImage} />
-            <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
-            <TextInput
-              style={textInputStyles.default}
-              value={lostItemName}
-              onChangeText={setLostItemName}
-              placeholder="물건 이름을 입력해주세요."
-              placeholderTextColor={COLORS.gray.Gray03}
-            />
+            <View style={styles.textInputWrapper}>
+              <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
+              <TextInput
+                style={textInputStyles.default}
+                value={lostItemName}
+                onChangeText={setLostItemName}
+                placeholder="물건 이름을 입력해주세요."
+                placeholderTextColor={COLORS.gray.Gray03}
+              />
+            </View>
             <CategorySelector />
             <ColorSelector />
             <View style={styles.textInputWrapper}>
@@ -139,7 +126,7 @@ const LostItemRegistrationScreen = () => {
             isDisabled={!isRequiredFilled}
           />
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingWrapper>
     </SafeAreaView>
   );
 };
