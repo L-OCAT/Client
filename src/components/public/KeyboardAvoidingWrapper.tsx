@@ -1,6 +1,12 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback} from 'react';
-import {KeyboardAvoidingView, StyleSheet, ViewStyle} from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  ViewStyle,
+} from 'react-native';
 import {AvoidSoftInput} from 'react-native-avoid-softinput';
 import {isIOS} from '../../lib/utils';
 
@@ -25,12 +31,18 @@ export const KeyboardAvoidingWrapper: React.FC<
 
   useFocusEffect(onFocusEffect);
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <KeyboardAvoidingView
-      style={[styles.container, style]}
-      behavior={isIOS ? 'padding' : undefined}>
-      {children}
-    </KeyboardAvoidingView>
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <KeyboardAvoidingView
+        style={[styles.container, style]}
+        behavior={isIOS ? 'padding' : undefined}>
+        {children}
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
