@@ -101,6 +101,8 @@ const LostItemCategoryScreen = () => {
           renderItem={renderMainCategory}
           keyExtractor={item => item}
           style={styles.mainCategoryList}
+          contentContainerStyle={styles.mainCategoryListContentContainerStyle}
+          showsVerticalScrollIndicator={false}
         />
         {selectedMain && (
           <FlatList
@@ -145,6 +147,9 @@ const styles = StyleSheet.create({
   mainCategoryList: {
     backgroundColor: COLORS.gray.Gray01,
     marginRight: ms(16),
+  },
+  mainCategoryListContentContainerStyle: {
+    paddingBottom: ms(80),
   },
   mainCategoryItem: {
     width: ms(125),

@@ -87,6 +87,8 @@ const LostItemColorsScreen = () => {
         numColumns={2}
         contentContainerStyle={styles.colorList}
         columnWrapperStyle={styles.columnWrapper}
+        scrollEnabled={true}
+        alwaysBounceVertical={false}
       />
       <View style={styles.btnBox}>
         <PrimaryLargeBtn
@@ -113,6 +115,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(16),
     paddingVertical: ms(12),
     gap: ms(12),
+    paddingBottom: ms(80),
   },
   columnWrapper: {
     justifyContent: 'space-between',
