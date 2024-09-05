@@ -73,7 +73,7 @@ const LostItemRegistrationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingWrapper>
+      <KeyboardAvoidingWrapper withMultiline={true}>
         <BackBtnGnbHeader
           title="분실물 등록"
           onPress={handleGoBackWithResetState}
