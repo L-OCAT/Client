@@ -43,9 +43,9 @@ export const textInputStyles = StyleSheet.create({
   },
 });
 
-const commonSmallTextStyle = {
+const commonSmallTextStyle: TextStyle = {
   fontSize: 12,
-  marginLeft: ms(16),
+  paddingHorizontal: ms(12),
 };
 
 export const smallTextStyles = StyleSheet.create({

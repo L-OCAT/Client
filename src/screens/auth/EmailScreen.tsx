@@ -6,6 +6,7 @@ import {
   TertiaryMediumBtn,
 } from '../../components/public/Buttons';
 import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
+import {KeyboardAvoidingWrapper} from '../../components/public/KeyboardAvoidingWrapper';
 import {useFormatTime, useTimer} from '../../hooks/useTimer';
 import {
   smallTextStyles,
@@ -112,83 +113,89 @@ const EmailScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <KeyboardAvoidingWrapper>
         <BackBtnGnbHeader title="이메일 인증" />
-        <Text style={[typography.subTitle_01, styles.titleText]}>
-          이메일을 입력해주세요
-        </Text>
-        <View style={styles.textInput}>
-          <TextInput
-            style={[
-              error === ErrorType.EMAIL_INVALID ||
-              error === ErrorType.EMAIL_DUPLICATE
-                ? textInputStyles.errorInput
-                : textInputStyles.default,
-              {flex: 1},
-              isCreateAuthNumber && {color: COLORS.gray.Gray03},
-            ]}
-            autoCapitalize="none"
-            placeholder="이메일 입력"
-            placeholderTextColor="#c1c1c1"
-            value={email}
-            onChangeText={e => setEmail(e)}
-            onSubmitEditing={() => handleSendAuthNumber()}
-            editable={!isCreateAuthNumber}
-          />
-          <TertiaryMediumBtn
-            text={isCreateAuthNumber ? '재전송' : '인증전송'}
-            onPress={() => {
-              isCreateAuthNumber ? createAuthNumber() : handleSendAuthNumber();
-            }}
-            isDisabled={!email}
-          />
-        </View>
-        {(error === ErrorType.EMAIL_INVALID ||
-          error === ErrorType.EMAIL_DUPLICATE) && (
-          <Text style={[smallTextStyles.error, styles.smallText]}>
-            {getErrorMessage(error)}
+        <View style={styles.contentsWrapper}>
+          <Text style={[typography.subTitle_01, styles.titleText]}>
+            이메일을 입력해주세요
           </Text>
-        )}
-        {isCreateAuthNumber && (
           <View style={styles.textInput}>
             <TextInput
               style={[
-                error === ErrorType.AUTH_NUMBER_INVALID
+                error === ErrorType.EMAIL_INVALID ||
+                error === ErrorType.EMAIL_DUPLICATE
                   ? textInputStyles.errorInput
                   : textInputStyles.default,
                 {flex: 1},
+                isCreateAuthNumber && {color: COLORS.gray.Gray03},
               ]}
               autoCapitalize="none"
-              placeholder="인증번호를 입력해주세요"
+              placeholder="이메일 입력"
               placeholderTextColor="#c1c1c1"
-              value={authNumber}
-              onChangeText={e => setAuthNumber(e)}
-              onSubmitEditing={validateAuthNumber}
+              value={email}
+              onChangeText={e => setEmail(e)}
+              onSubmitEditing={() => handleSendAuthNumber()}
+              editable={!isCreateAuthNumber}
             />
             <TertiaryMediumBtn
-              text={'확인'}
-              onPress={validateAuthNumber}
-              isDisabled={!authNumber || remainingTime === 0}
+              text={isCreateAuthNumber ? '재전송' : '인증전송'}
+              onPress={() => {
+                isCreateAuthNumber
+                  ? createAuthNumber()
+                  : handleSendAuthNumber();
+              }}
+              isDisabled={!email}
             />
           </View>
-        )}
-        {(error === ErrorType.AUTH_NUMBER_INVALID ||
-          error === ErrorType.AUTH_NUMBER_TIMEOUT) && (
-          <Text style={[smallTextStyles.error, styles.smallText]}>
-            {getErrorMessage(error)}
-          </Text>
-        )}
-        {isCreateAuthNumber && (
-          <Text style={[smallTextStyles.default, styles.smallText]}>
-            남은 시간: {formatTime(remainingTime)}
-          </Text>
-        )}
-      </View>
-      <PrimaryLargeBtn
-        text={'다음'}
-        onPress={handleNavigateToProfileScreen}
-        isDisabled={!isAuthNumberValid}
-      />
+          {(error === ErrorType.EMAIL_INVALID ||
+            error === ErrorType.EMAIL_DUPLICATE) && (
+            <Text style={[smallTextStyles.error, styles.smallText]}>
+              {getErrorMessage(error)}
+            </Text>
+          )}
+          {isCreateAuthNumber && (
+            <View style={styles.textInput}>
+              <TextInput
+                style={[
+                  error === ErrorType.AUTH_NUMBER_INVALID
+                    ? textInputStyles.errorInput
+                    : textInputStyles.default,
+                  {flex: 1},
+                ]}
+                autoCapitalize="none"
+                placeholder="인증번호를 입력해주세요"
+                placeholderTextColor="#c1c1c1"
+                value={authNumber}
+                onChangeText={e => setAuthNumber(e)}
+                onSubmitEditing={validateAuthNumber}
+              />
+              <TertiaryMediumBtn
+                text={'확인'}
+                onPress={validateAuthNumber}
+                isDisabled={!authNumber || remainingTime === 0}
+              />
+            </View>
+          )}
+          {(error === ErrorType.AUTH_NUMBER_INVALID ||
+            error === ErrorType.AUTH_NUMBER_TIMEOUT) && (
+            <Text style={[smallTextStyles.error, styles.smallText]}>
+              {getErrorMessage(error)}
+            </Text>
+          )}
+          {isCreateAuthNumber && (
+            <Text style={[smallTextStyles.default, styles.smallText]}>
+              남은 시간: {formatTime(remainingTime)}
+            </Text>
+          )}
+        </View>
+        <View style={styles.btnBox}>
+          <PrimaryLargeBtn
+            text={'다음'}
+            onPress={handleNavigateToProfileScreen}
+            isDisabled={!isAuthNumberValid}
+          />
+        </View>
+      </KeyboardAvoidingWrapper>
     </SafeAreaView>
   );
 };
@@ -199,21 +206,25 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     justifyContent: 'space-between',
   },
+  contentsWrapper: {
+    paddingHorizontal: ms(23),
+    flex: 1,
+  },
   titleText: {
     color: COLORS.gray.Gray07,
-    marginLeft: ms(20),
     marginVertical: ms(16),
   },
   textInput: {
     gap: ms(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: ms(16),
     marginTop: ms(14),
   },
   smallText: {
     paddingTop: ms(8),
-    paddingHorizontal: ms(14),
+  },
+  btnBox: {
+    paddingVertical: 10,
   },
 });
 
