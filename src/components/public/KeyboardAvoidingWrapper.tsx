@@ -17,9 +17,12 @@ interface KeyboardAvoidingWrapperProps {
   withMultiline?: boolean;
 }
 
-export const KeyboardAvoidingWrapper: React.FC<
-  KeyboardAvoidingWrapperProps
-> = ({children, offset = -140, style, withMultiline = false}) => {
+export const KeyboardAvoidingWrapper = ({
+  children,
+  offset = -140,
+  style,
+  withMultiline = false,
+}: KeyboardAvoidingWrapperProps) => {
   const onFocusEffect = useCallback(() => {
     if (isIOS && withMultiline) {
       AvoidSoftInput.setAvoidOffset(offset);
