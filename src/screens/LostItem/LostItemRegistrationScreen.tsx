@@ -78,7 +78,9 @@ const LostItemRegistrationScreen = () => {
           title="분실물 등록"
           onPress={handleGoBackWithResetState}
         />
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.contentsWrapper}>
             <ImagePicker onImageChange={setImage} />
             <View style={styles.textInputWrapper}>

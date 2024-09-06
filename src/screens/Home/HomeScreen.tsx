@@ -58,7 +58,7 @@ const HomeScreen = () => {
       />
       <View style={styles.contentsWrapper}>
         <ScrollView
-          contentContainerStyle={styles.scrollViewContent}
+          contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}>
           <View style={styles.navigationBtnWrapper}>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
     overflow: 'hidden',
   },
-  scrollViewContent: {
+  scrollContent: {
     flexGrow: 1,
     paddingBottom: isIOS ? 0 : 60,
   },

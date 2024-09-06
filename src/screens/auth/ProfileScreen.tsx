@@ -51,7 +51,9 @@ const ProfileScreen = () => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingWrapper>
         <BackBtnGnbHeader title="프로필 설정" />
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}>
           <Text style={[typography.subTitle_01, styles.titleText]}>
             프로필과 닉네임을 설정해주세요
           </Text>
