@@ -19,6 +19,7 @@
 		7699B88040F8A987B510C191 /* libPods-LOCATClient-LOCATClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-LOCATClient-LOCATClientTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A8BF4DC51AE241ADA7922568 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */; };
+		FF4E42C43F5B4EA386240610 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7CC6CD1C10DE4877879C92A1 /* Pretendard-SemiBold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,11 +52,12 @@
 		5B7EB9410499542E8C5724F5 /* Pods-LOCATClient-LOCATClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LOCATClient-LOCATClientTests.debug.xcconfig"; path = "Target Support Files/Pods-LOCATClient-LOCATClientTests/Pods-LOCATClient-LOCATClientTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LOCATClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LOCATClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C0E8F94F2344EC09D56CEBD /* Pretendard-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Regular.otf"; path = "../src/assets/fonts/Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		7CC6CD1C10DE4877879C92A1 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.otf"; path = "../src/assets/fonts/Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LOCATClient/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-LOCATClient-LOCATClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LOCATClient-LOCATClientTests.release.xcconfig"; path = "Target Support Files/Pods-LOCATClient-LOCATClientTests/Pods-LOCATClient-LOCATClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9999A73F3BD436C99BA22E7 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Bold.otf"; path = "../src/assets/fonts/Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Medium.otf"; path = "../src/assets/fonts/Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; name = "Pretendard-Medium.otf"; path = "../src/assets/fonts/Pretendard-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,16 @@
 				29A7B3083710BAD9A123C09F /* PrivacyInfo.xcprivacy */,
 			);
 			name = LOCATClient;
+			sourceTree = "<group>";
+		};
+		1ABD27B177D4479AB896FE63 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */,
+				7CC6CD1C10DE4877879C92A1 /* Pretendard-SemiBold.otf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -164,15 +176,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		1ABD27B177D4479AB896FE63 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				DB4B52C34F4B4870A79C2331 /* Pretendard-Medium.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -273,6 +276,7 @@
 				2FC8A76AA2074422A8CAF90A /* Pretendard-Bold.otf in Resources */,
 				264015EFF8AC476B830B1697 /* Pretendard-Regular.otf in Resources */,
 				A8BF4DC51AE241ADA7922568 /* Pretendard-Medium.otf in Resources */,
+				FF4E42C43F5B4EA386240610 /* Pretendard-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

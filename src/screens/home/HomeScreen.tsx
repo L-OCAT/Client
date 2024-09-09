@@ -1,14 +1,25 @@
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
 
 import FastImage from 'react-native-fast-image';
 import RightIcon from '../../assets/svg/icon_right.svg';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
-import {ms, topWithSafeArea} from '../../lib/utils/dimensions';
+import {isIOS} from '../../lib/utils';
+import {
+  BASE_SAFEAREATOP,
+  ms,
+  topWithSafeArea,
+} from '../../lib/utils/dimensions';
 import {
   BottomTabParamList,
   MainStackNavigationProp,
@@ -21,7 +32,6 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-  const screenLayout = useScreenLayout();
 
   const handleNavigateToLostItem = () => {
     navigation.navigate('LostItemStack', {screen: 'LostItemRegistration'});
@@ -36,7 +46,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={[screenLayout, styles.container]}>
+    <SafeAreaView style={styles.container}>
       <Text style={[typography.subTitle_01, styles.titleText]}>
         00님의 소중한 물건,{'\n'}
         LOCAT에서 찾아요!
@@ -47,64 +57,69 @@ const HomeScreen = () => {
         resizeMode={FastImage.resizeMode.contain}
       />
       <View style={styles.contentsWrapper}>
-        <View style={styles.navigationBtnWrapper}>
-          <View style={styles.registrationBtnWrapper}>
-            <Pressable
-              style={[styles.navigationBtn, styles.registrationBtn]}
-              onPress={handleNavigateToLostItem}>
-              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
-                잃어버린 물건{'\n'}등록하기
-              </Text>
-              <FastImage
-                source={require('../../assets/images/lostItem.png')}
-                style={styles.lostItemImage}
-                resizeMode={FastImage.resizeMode.contain}
-              />
-            </Pressable>
-            <Pressable
-              style={[styles.navigationBtn, styles.registrationBtn]}
-              onPress={handleNavigateToFoundItem}>
-              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
-                습득한 물건{'\n'}등록하기
-              </Text>
-              <FastImage
-                source={require('../../assets/images/foundItem.png')}
-                style={styles.foundItemImage}
-                resizeMode={FastImage.resizeMode.contain}
-              />
-            </Pressable>
-          </View>
-          <Pressable
-            style={[styles.navigationBtn, styles.matchingListBtn]}
-            onPress={handleNavigateToMatchingList}>
-            <Text style={[typography.subTitle_02, styles.contentTitleText]}>
-              등록한 물건 리스트
-            </Text>
-            <FastImage
-              source={require('../../assets/images/matchingList.png')}
-              style={styles.matchingListImage}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-          </Pressable>
-        </View>
-        {/* 아래 부분은 추후 분실물 등록 여부에 따라 제어 */}
-        <View style={styles.bottomContentsWrapper}>
-          <View>
-            <Text style={[typography.subTitle_02, styles.contentTitleText]}>
-              최근 등록된 습득물
-            </Text>
-            <Text style={styles.subText}>
-              내 위치 주변에 등록된 습득물을 확인해요
-            </Text>
-          </View>
-          <Pressable style={[styles.navigationBtn, styles.bottomContentsBtn]}>
-            <View style={styles.iconBox}>
-              <RightIcon width={18} height={18} />
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}>
+          <View style={styles.navigationBtnWrapper}>
+            <View style={styles.registrationBtnWrapper}>
+              <Pressable
+                style={[styles.navigationBtn, styles.registrationBtn]}
+                onPress={handleNavigateToLostItem}>
+                <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+                  잃어버린 물건{'\n'}등록하기
+                </Text>
+                <FastImage
+                  source={require('../../assets/images/lostItem.png')}
+                  style={styles.lostItemImage}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              </Pressable>
+              <Pressable
+                style={[styles.navigationBtn, styles.registrationBtn]}
+                onPress={handleNavigateToFoundItem}>
+                <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+                  습득한 물건{'\n'}등록하기
+                </Text>
+                <FastImage
+                  source={require('../../assets/images/foundItem.png')}
+                  style={styles.foundItemImage}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              </Pressable>
             </View>
-          </Pressable>
-        </View>
+            <Pressable
+              style={[styles.navigationBtn, styles.matchingListBtn]}
+              onPress={handleNavigateToMatchingList}>
+              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+                등록한 물건 리스트
+              </Text>
+              <FastImage
+                source={require('../../assets/images/matchingList.png')}
+                style={styles.matchingListImage}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </Pressable>
+          </View>
+          {/* 아래 부분은 추후 분실물 등록 여부에 따라 제어 */}
+          <View style={styles.bottomContentsWrapper}>
+            <View>
+              <Text style={[typography.subTitle_02, styles.contentTitleText]}>
+                최근 등록된 습득물
+              </Text>
+              <Text style={styles.subText}>
+                내 위치 주변에 등록된 습득물을 확인해요
+              </Text>
+            </View>
+            <Pressable style={[styles.navigationBtn, styles.bottomContentsBtn]}>
+              <View style={styles.iconBox}>
+                <RightIcon width={18} height={18} />
+              </View>
+            </Pressable>
+          </View>
+        </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -132,12 +147,16 @@ const styles = StyleSheet.create({
     height: ms(279),
   },
   contentsWrapper: {
-    position: 'absolute',
-    top: topWithSafeArea(249),
-    height: '100%',
+    flex: 1,
+    marginTop: ms(249 - BASE_SAFEAREATOP),
     backgroundColor: COLORS.defaultBG,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
+    overflow: 'hidden',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: isIOS ? 0 : 60,
   },
   contentTitleText: {
     color: COLORS.gray.Gray07,

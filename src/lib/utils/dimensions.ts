@@ -20,8 +20,12 @@ export const ws = widthScale;
 export const hs = heightScale;
 export const ms = moderateScale;
 
-const BASE_SAFEAREATOP = 47;
-const BASE_SAFEAREABOTTOM = 34;
+// iPhone 14 기준
+export const BASE_SAFEAREATOP = 47;
+export const BASE_SAFEAREABOTTOM = 34;
 
 export const topWithSafeArea = (top: number) =>
   isIOS ? ms(top) : ms(top - BASE_SAFEAREATOP);
+
+export const bottomWithSafeArea = (bottom: number) =>
+  isIOS ? ms(bottom) + BASE_SAFEAREABOTTOM : ms(bottom);

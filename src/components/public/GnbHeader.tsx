@@ -4,6 +4,7 @@ import CloseIcon from '../../assets/svg/icon_close.svg';
 import BackIcon from '../../assets/svg/icon_left.svg';
 import {COLORS} from '../../lib/styles/theme';
 import {typography} from '../../lib/styles/typography';
+import {ms} from '../../lib/utils/dimensions';
 
 enum GnbHeaderType {
   BACK = 'back',
@@ -57,8 +58,8 @@ export const CloseBtnGnbHeader = (props: Omit<GnbHeaderProps, 'type'>) =>
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    height: 56,
-    gap: 12,
+    height: ms(56),
+    gap: ms(12),
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   BtnWrapper: {
-    height: 48,
-    width: 48,
+    height: ms(48),
+    width: ms(48),
     justifyContent: 'center',
     alignItems: 'center',
   },

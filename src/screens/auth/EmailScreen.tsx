@@ -1,21 +1,28 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {
   PrimaryLargeBtn,
   TertiaryMediumBtn,
 } from '../../components/public/Buttons';
+import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
+import {KeyboardAvoidingWrapper} from '../../components/public/KeyboardAvoidingWrapper';
+import {useFormatTime, useTimer} from '../../hooks/useTimer';
 import {
   smallTextStyles,
   textInputStyles,
 } from '../../lib/styles/textInputStyles';
 import {COLORS} from '../../lib/styles/theme';
-import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
-import {useScreenLayout} from '../../hooks/useScreenLayout';
-import {ms} from '../../lib/utils/dimensions';
 import {typography} from '../../lib/styles/typography';
-import {useNavigation} from '@react-navigation/native';
+import {ms} from '../../lib/utils/dimensions';
 import {AuthStackNavigationProp} from '../../navigation/types';
-import { useTimer, useFormatTime } from '../../hooks/useTimer';
 
 const INITIAL_TIME = 179;
 
@@ -28,14 +35,13 @@ enum ErrorType {
 
 const EmailScreen = () => {
   const navigation = useNavigation<AuthStackNavigationProp>();
-  const screenLayout = useScreenLayout();
   const [email, setEmail] = useState('');
   const [authNumber, setAuthNumber] = useState('');
   const [isAuthNumberValid, setIsAuthNumberValid] = useState(false);
-  const [isCreateAuthNumber, setIsCreateAuthNumber] = useState(false)
+  const [isCreateAuthNumber, setIsCreateAuthNumber] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
 
-  const { remainingTime, resetTimer } = useTimer(INITIAL_TIME);
+  const {remainingTime, resetTimer} = useTimer(INITIAL_TIME);
   const formatTime = useFormatTime();
 
   const getErrorMessage = (errorType: ErrorType | null): string => {
@@ -47,7 +53,7 @@ const EmailScreen = () => {
       case ErrorType.AUTH_NUMBER_INVALID:
         return '잘못된 인증번호입니다';
       case ErrorType.AUTH_NUMBER_TIMEOUT:
-        return '입력 시간이 초과됐습니다'
+        return '입력 시간이 초과됐습니다';
       default:
         return '';
     }
@@ -72,18 +78,18 @@ const EmailScreen = () => {
 
   // 인증번호 생성
   const createAuthNumber = () => {
-    setAuthNumber('')
-    setIsCreateAuthNumber(true)
-    setError(null)
+    setAuthNumber('');
+    setIsCreateAuthNumber(true);
+    setError(null);
     resetTimer();
-  }
+  };
 
   //남은 시간이 0일시 에러메시지 출력
-  useEffect(()=>{
-    if(remainingTime === 0) {
-      setError(ErrorType.AUTH_NUMBER_TIMEOUT)
+  useEffect(() => {
+    if (remainingTime === 0) {
+      setError(ErrorType.AUTH_NUMBER_TIMEOUT);
     }
-  },[remainingTime])
+  }, [remainingTime]);
 
   // onPress 이벤트 핸들러
   const handleSendAuthNumber = async () => {
@@ -101,89 +107,107 @@ const EmailScreen = () => {
     // 모두 통과하면 인증번호 생성
     createAuthNumber();
   };
-  
+
   // 인증번호 확인
   const validateAuthNumber = () => {
-    setIsAuthNumberValid(false)
+    setIsAuthNumberValid(false);
     setError(ErrorType.AUTH_NUMBER_INVALID);
-  }
-  
+  };
+
   const handleNavigateToProfileScreen = () => {
     navigation.navigate('Profile');
   };
 
   return (
-    <View style={[styles.container, screenLayout]}>
-      <View>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingWrapper>
         <BackBtnGnbHeader title="이메일 인증" />
-        <Text style={[typography.subTitle_01, styles.titleText]}>이메일을 입력해주세요</Text>
-        <View style={styles.textInput}>
-          <TextInput
-            style={[
-              (error === ErrorType.EMAIL_INVALID || error === ErrorType.EMAIL_DUPLICATE) ? 
-              textInputStyles.errorInput : 
-              textInputStyles.default, 
-              { flex: 1 },
-              isCreateAuthNumber && { color: COLORS.gray.Gray03 }
-            ]}
-            autoCapitalize="none"
-            placeholder="이메일 입력"
-            placeholderTextColor="#c1c1c1"
-            value={email}
-            onChangeText={e => setEmail(e)}
-            onSubmitEditing={() => handleSendAuthNumber()}
-            editable={!isCreateAuthNumber}
-          />
-          <TertiaryMediumBtn
-            text={isCreateAuthNumber ? '재전송' : '인증전송'}
-            onPress={() => {
-              isCreateAuthNumber ? createAuthNumber() : handleSendAuthNumber()
-            }}
-            isDisabled={!email}
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.contentsWrapper}>
+            <Text style={[typography.subTitle_01, styles.titleText]}>
+              이메일을 입력해주세요
+            </Text>
+            <View style={styles.textInput}>
+              <TextInput
+                style={[
+                  error === ErrorType.EMAIL_INVALID ||
+                  error === ErrorType.EMAIL_DUPLICATE
+                    ? textInputStyles.errorInput
+                    : textInputStyles.default,
+                  {flex: 1},
+                  isCreateAuthNumber && {color: COLORS.gray.Gray03},
+                ]}
+                autoCapitalize="none"
+                placeholder="이메일 입력"
+                placeholderTextColor="#c1c1c1"
+                value={email}
+                onChangeText={e => setEmail(e)}
+                onSubmitEditing={() => handleSendAuthNumber()}
+                editable={!isCreateAuthNumber}
+              />
+              <TertiaryMediumBtn
+                text={isCreateAuthNumber ? '재전송' : '인증전송'}
+                onPress={() => {
+                  isCreateAuthNumber
+                    ? createAuthNumber()
+                    : handleSendAuthNumber();
+                }}
+                isDisabled={!email}
+              />
+            </View>
+            {(error === ErrorType.EMAIL_INVALID ||
+              error === ErrorType.EMAIL_DUPLICATE) && (
+              <Text style={[smallTextStyles.error, styles.smallText]}>
+                {getErrorMessage(error)}
+              </Text>
+            )}
+            {isCreateAuthNumber && (
+              <View style={styles.textInput}>
+                <TextInput
+                  style={[
+                    error === ErrorType.AUTH_NUMBER_INVALID
+                      ? textInputStyles.errorInput
+                      : textInputStyles.default,
+                    {flex: 1},
+                  ]}
+                  autoCapitalize="none"
+                  placeholder="인증번호를 입력해주세요"
+                  placeholderTextColor="#c1c1c1"
+                  value={authNumber}
+                  onChangeText={e => setAuthNumber(e)}
+                  onSubmitEditing={validateAuthNumber}
+                />
+                <TertiaryMediumBtn
+                  text={'확인'}
+                  onPress={validateAuthNumber}
+                  isDisabled={!authNumber || remainingTime === 0}
+                />
+              </View>
+            )}
+            {(error === ErrorType.AUTH_NUMBER_INVALID ||
+              error === ErrorType.AUTH_NUMBER_TIMEOUT) && (
+              <Text style={[smallTextStyles.error, styles.smallText]}>
+                {getErrorMessage(error)}
+              </Text>
+            )}
+            {isCreateAuthNumber && (
+              <Text style={[smallTextStyles.default, styles.smallText]}>
+                남은 시간: {formatTime(remainingTime)}
+              </Text>
+            )}
+          </View>
+        </ScrollView>
+        <View style={styles.btnBox}>
+          <PrimaryLargeBtn
+            text={'다음'}
+            onPress={handleNavigateToProfileScreen}
+            isDisabled={!isAuthNumberValid}
           />
         </View>
-        {(error === ErrorType.EMAIL_INVALID || error === ErrorType.EMAIL_DUPLICATE) && (
-          <Text style={[smallTextStyles.error, styles.smallText]}>
-            {getErrorMessage(error)}
-          </Text>
-        )}
-        {isCreateAuthNumber && 
-        <View style={styles.textInput}>
-          <TextInput
-            style={[
-              error === ErrorType.AUTH_NUMBER_INVALID ? textInputStyles.errorInput : textInputStyles.default,
-              { flex: 1 },
-            ]}
-            autoCapitalize="none"
-            placeholder="인증번호를 입력해주세요"
-            placeholderTextColor="#c1c1c1"
-            value={authNumber}
-            onChangeText={e => setAuthNumber(e)}
-            onSubmitEditing={validateAuthNumber}
-          />
-          <TertiaryMediumBtn
-            text={'확인'}
-            onPress={validateAuthNumber}
-            isDisabled={!authNumber || remainingTime === 0}
-          />
-        </View>}
-        {(error === ErrorType.AUTH_NUMBER_INVALID || error === ErrorType.AUTH_NUMBER_TIMEOUT) && (
-          <Text style={[smallTextStyles.error, styles.smallText]}>
-            {getErrorMessage(error)}
-          </Text>
-        )}
-        {isCreateAuthNumber && 
-        <Text style={[smallTextStyles.default, styles.smallText]}>
-          남은 시간: {formatTime(remainingTime)}
-        </Text>}
-
-      </View>
-      <PrimaryLargeBtn
-        text={'다음'}
-        onPress={handleNavigateToProfileScreen}
-        isDisabled={!isAuthNumberValid}
-      />
-    </View>
+      </KeyboardAvoidingWrapper>
+    </SafeAreaView>
   );
 };
 
@@ -193,22 +217,29 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     justifyContent: 'space-between',
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  contentsWrapper: {
+    paddingHorizontal: ms(23),
+    flex: 1,
+  },
   titleText: {
     color: COLORS.gray.Gray07,
-    marginLeft: ms(20),
-    marginVertical: ms(16)
+    marginVertical: ms(16),
   },
   textInput: {
     gap: ms(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: ms(16),
-    marginTop: ms(14)
+    marginTop: ms(14),
   },
   smallText: {
     paddingTop: ms(8),
-    paddingHorizontal: ms(14)
-  }
+  },
+  btnBox: {
+    paddingVertical: 10,
+  },
 });
 
 export default EmailScreen;
