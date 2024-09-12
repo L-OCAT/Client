@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {RecoilRoot} from 'recoil';
+import CustomModal from './components/public/Modal';
 import {navigationRef} from './lib/utils/navigation-helper';
 import RootStackNavigator from './navigation/RootStackNavigator';
 
@@ -19,6 +20,7 @@ export default function App() {
           <SafeAreaProvider>
             <NavigationContainer ref={navigationRef}>
               <RootStackNavigator />
+              <CustomModal />
             </NavigationContainer>
           </SafeAreaProvider>
         </RecoilRoot>
