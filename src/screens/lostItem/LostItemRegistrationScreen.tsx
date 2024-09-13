@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -10,59 +10,101 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {useRecoilState, useRecoilValue, useResetRecoilState} from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import CheckIcon from '../../assets/svg/icon_check.svg';
 import CategorySelector from '../../components/lostItem/CategorySelector';
 import ColorSelector from '../../components/lostItem/ColorSelector';
 import ImagePicker from '../../components/lostItem/ImagePicker';
-import {PrimaryLargeBtn} from '../../components/public/Buttons';
-import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
-import {KeyboardAvoidingWrapper} from '../../components/public/KeyboardAvoidingWrapper';
-import {useResetOnBackNavigation} from '../../hooks/useResetStateOnBackNavigation';
-import {textInputStyles} from '../../lib/styles/textInputStyles';
-import {COLORS} from '../../lib/styles/theme';
-import {typography} from '../../lib/styles/typography';
-import {ms} from '../../lib/utils/dimensions';
+import { PrimaryLargeBtn } from '../../components/public/Buttons';
+import { BackBtnGnbHeader } from '../../components/public/GnbHeader';
+import { KeyboardAvoidingWrapper } from '../../components/public/KeyboardAvoidingWrapper';
+import useModal from '../../hooks/useModal';
+import { useResetOnBackNavigation } from '../../hooks/useResetStateOnBackNavigation';
 import {
-  hasSpecialCategoryOrColorSelector,
-  isRequiredFilledSelector,
+  smallTextStyles,
+  textInputStyles,
+} from '../../lib/styles/textInputStyles';
+import { COLORS } from '../../lib/styles/theme';
+import { typography } from '../../lib/styles/typography';
+import { ms } from '../../lib/utils/dimensions';
+import {
+  ColorOption,
+  lostItemCategoryAtom,
+  lostItemColorsAtom,
   lostItemDescriptionAtom,
   lostItemImageAtom,
   lostItemIsRewardOfferedAtom,
   lostItemNameAtom,
+  MainCategory,
   partialLostItemSelector,
 } from '../../stores/lostItem';
+import { LostItemRegistrationModalKeys, ScreenKeys } from '../../stores/modal';
 
 const LostItemRegistrationScreen = () => {
   const navigation = useNavigation();
+  const {showModal, hideModal} = useModal();
   const [image, setImage] = useRecoilState(lostItemImageAtom);
   const [lostItemName, setLostItemName] = useRecoilState(lostItemNameAtom);
+  const [lostItemCategory, setLostItemCategory] =
+    useRecoilState(lostItemCategoryAtom);
+  const [lostItemColors, setLostItemColors] =
+    useRecoilState(lostItemColorsAtom);
   const [description, setDescription] = useRecoilState(lostItemDescriptionAtom);
   const [isRewardOffered, setIsRewardOffered] = useRecoilState(
     lostItemIsRewardOfferedAtom,
   );
-  const isRequiredFilled = useRecoilValue(isRequiredFilledSelector);
-  const hasSpecialCategoryOrColor = useRecoilValue(
-    hasSpecialCategoryOrColorSelector,
-  );
+  const [errors, setErrors] = useState({
+    name: false,
+    category: false,
+    colors: false,
+  });
+  const [hasBeenChecked, setHasBeenChecked] = useState(false);
+
   const resetLostItem = useResetRecoilState(partialLostItemSelector);
   const handleGoBackWithResetState = useResetOnBackNavigation(resetLostItem);
 
+  const validateRequiredFields = useCallback(() => {
+    if (!hasBeenChecked) return true;
+    
+    const newErrors = {
+      name: !lostItemName.trim(),
+      category: !lostItemCategory.main,
+      colors: lostItemColors.length === 0,
+    };
+    
+    setErrors(newErrors);
+    return Object.values(newErrors).every(error => !error);
+  }, [hasBeenChecked, lostItemName, lostItemCategory.main, lostItemColors]);
+
+  useEffect(() => {
+    validateRequiredFields();
+  }, [validateRequiredFields]);
+
   const handleNavigateToMap = () => {
-    if (hasSpecialCategoryOrColor) {
-      // 팝업 모달 기능 추가 예정
-      console.log(
-        '카테고리와 색상을 선택하지 않으면 매칭 리스트를 확인할 수 없어요. 이대로 등록할까요?',
-      );
+    setHasBeenChecked(true);
+    if (!validateRequiredFields()) return;
+    if (
+      lostItemCategory.main === MainCategory.NONE &&
+      lostItemColors.includes(ColorOption.OTHER)
+    ) {
+      showModal({
+        screen: ScreenKeys.LOST_ITEM_REGISTRATION,
+        modalKey: LostItemRegistrationModalKeys.CONFIRMATION,
+        customConfig: {
+          onPrimaryButtonPress: () => {
+            console.log('지도로 이동');
+            // navigation.navigate('MapScreen');
+          },
+          onSecondaryButtonPress: hideModal,
+        },
+      });
     } else {
-      // 지도 스크린으로 이동
+      console.log('지도로 이동');
       // navigation.navigate('MapScreen');
-      console.log('Navigate to Map Screen');
     }
   };
-  const handleCheckbox = () => {
-    setIsRewardOffered(prev => !prev);
-  };
+
+  const handleCheckbox = () => setIsRewardOffered(prev => !prev);
 
   const checkedStyle: ViewStyle | null = isRewardOffered
     ? {
@@ -86,15 +128,36 @@ const LostItemRegistrationScreen = () => {
             <View style={styles.textInputWrapper}>
               <Text style={[typography.body_02_B, styles.label]}>물건명*</Text>
               <TextInput
-                style={textInputStyles.default}
+                style={[
+                  textInputStyles.default,
+                  errors.name && styles.requiredField,
+                ]}
                 value={lostItemName}
-                onChangeText={setLostItemName}
+                onChangeText={text => {
+                  setLostItemName(text);
+                  setErrors(prev => ({...prev, name: false}));
+                }}
                 placeholder="물건 이름을 입력해주세요."
                 placeholderTextColor={COLORS.gray.Gray03}
               />
+              {errors.name && (
+                <Text style={smallTextStyles.error}>
+                  물건명을 입력해주세요.
+                </Text>
+              )}
             </View>
             <CategorySelector />
+            {errors.category && (
+              <Text style={smallTextStyles.error}>
+                카테고리를 선택해주세요.
+              </Text>
+            )}
             <ColorSelector />
+            {errors.colors && (
+              <Text style={smallTextStyles.error}>
+                색상을 선택해주세요.
+              </Text>
+            )}
             <View style={styles.textInputWrapper}>
               <Text style={[typography.body_02_B, styles.label]}>상세설명</Text>
               <TextInput
@@ -108,13 +171,13 @@ const LostItemRegistrationScreen = () => {
               />
             </View>
             <View style={styles.rewardWrapper}>
-              <View style={styles.checkBoxWrapper}>
-                <Pressable
-                  onPress={handleCheckbox}
-                  style={[styles.checkBox, checkedStyle]}>
+              <Pressable
+                onPress={handleCheckbox}
+                style={styles.checkBoxWrapper}>
+                <View style={[styles.checkBox, checkedStyle]}>
                   {isRewardOffered && <CheckIcon />}
-                </Pressable>
-              </View>
+                </View>
+              </Pressable>
               <Text style={[typography.body_02, styles.rewardText]}>
                 보상금 지급 의사
               </Text>
@@ -122,11 +185,7 @@ const LostItemRegistrationScreen = () => {
           </View>
         </ScrollView>
         <View style={styles.btnBox}>
-          <PrimaryLargeBtn
-            text="다음"
-            onPress={handleNavigateToMap}
-            isDisabled={!isRequiredFilled}
-          />
+          <PrimaryLargeBtn text="다음" onPress={handleNavigateToMap} />
         </View>
       </KeyboardAvoidingWrapper>
     </SafeAreaView>
@@ -137,9 +196,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     gap: ms(12),
-    flex: 1,
-  },
-  flexBox: {
     flex: 1,
   },
   scrollContent: {
@@ -183,6 +239,10 @@ const styles = StyleSheet.create({
   },
   rewardText: {
     color: COLORS.gray.Gray04,
+  },
+  requiredField: {
+    borderColor: COLORS.orange.Orange01,
+    borderWidth: 1,
   },
 });
 
