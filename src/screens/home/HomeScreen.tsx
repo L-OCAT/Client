@@ -57,7 +57,7 @@ const HomeScreen = () => {
         onSecondaryButtonPress: () => {
           hideModal();
           console.log('지도로 이동');
-            // navigation.navigate('MapScreen');
+          // navigation.navigate('MapScreen');
         },
       },
     });

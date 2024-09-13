@@ -18,7 +18,7 @@ const CustomModal = () => {
     secondaryButtonText,
     onPrimaryButtonPress,
     onSecondaryButtonPress,
-    hideModal,
+    resetModal,
   } = useModal();
 
   const renderContent = () => {
@@ -82,7 +82,7 @@ const CustomModal = () => {
       animationType="fade"
       transparent
       visible={isVisible}
-      onRequestClose={hideModal}
+      onRequestClose={resetModal}
       statusBarTranslucent>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
