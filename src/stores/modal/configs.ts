@@ -15,7 +15,9 @@ export enum LostItemColorsModalKeys {
   OTHER_COLOR_SELECTED = 'OTHER_COLOR_SELECTED',
 }
 
-export enum HomeModalKeys {}
+export enum HomeModalKeys {
+  NO_LOST_ITEM = 'NO_LOST_ITEM',
+}
 
 export enum ScreenKeys {
   LOST_ITEM_REGISTRATION = 'LOST_ITEM_REGISTRATION',
@@ -35,14 +37,18 @@ export const MODAL_CONFIGS: ModalConfigsType = {
   },
   [ScreenKeys.LOST_ITEM_COLORS]: {
     [LostItemColorsModalKeys.OTHER_COLOR_SELECTED]: {
-      title: '색상 선택',
-      body: '기타를 선택하면 다른 색상은\n선택할 수 없어요.',
+      singleMessage: '\'기타\'를 선택하면\n다른 색상을 선택할 수 없어요.',
       primaryButtonText: '확인',
       modalType: ModalType.SINGLE_BUTTON,
     },
   },
   [ScreenKeys.HOME]: {
-    // 홈스크린 등록 관련 모달 설정을 여기에 추가
+    [HomeModalKeys.NO_LOST_ITEM]: {
+      singleMessage: '아직 등록한 분실물이 없어요',
+      primaryButtonText: '분실물 등록하기',
+      secondaryButtonText: '근처 습득물 보러가기',
+      modalType: ModalType.STACKED_BUTTONS,
+    },
   },
 };
 
