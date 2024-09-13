@@ -1,15 +1,27 @@
 import { ModalKeysByScreen, ModalType, ScreenKeys } from './configs';
 
-export interface ModalState {
+type BaseModalState = {
   isVisible: boolean;
-  title?: string;
-  body: string;
   primaryButtonText: string;
   secondaryButtonText?: string;
   onPrimaryButtonPress?: () => void;
   onSecondaryButtonPress?: () => void;
-  modalType: ModalType
-}
+  modalType: ModalType;
+};
+
+export type SingleMessageModalState = BaseModalState & {
+  singleMessage: string;
+  title?: never;
+  body?: never;
+};
+
+type TitleBodyModalState = BaseModalState & {
+  singleMessage?: never;
+  title: string;
+  body: string;
+};
+
+export type ModalState = SingleMessageModalState | TitleBodyModalState;
 
 export type ModalKeysByScreenType = typeof ModalKeysByScreen;
 

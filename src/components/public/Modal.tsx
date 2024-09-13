@@ -13,12 +13,30 @@ const CustomModal = () => {
   const {
     title,
     body,
+    singleMessage,
     primaryButtonText,
     secondaryButtonText,
     onPrimaryButtonPress,
     onSecondaryButtonPress,
     hideModal,
   } = useModal();
+
+  const renderContent = () => {
+    if (singleMessage) {
+      return <Text style={[typography.subTitle_02_M, styles.singleMessage]}>{singleMessage}</Text>;
+    }
+    
+    if (title && body) {
+      return (
+        <>
+          <Text style={[typography.subTitle_02, styles.title]}>{title}</Text>
+          <Text style={[typography.body_01_M, styles.body]}>{body}</Text>
+        </>
+      );
+    }
+    
+    return null;
+  };
 
   const renderButtons = () => {
     const buttonStyles = [styles.button];
@@ -69,10 +87,7 @@ const CustomModal = () => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.textWrapper}>
-              <Text style={[typography.subTitle_02, styles.title]}>{title}</Text>
-              {body && (
-                <Text style={[typography.body_02, styles.body]}>{body}</Text>
-              )}
+              {renderContent()}
             </View>
             {renderButtons()}
           </View>
@@ -107,6 +122,10 @@ const styles = StyleSheet.create({
   body: {
     textAlign: 'center',
     color: COLORS.gray.Gray05,
+  },
+  singleMessage: {
+    textAlign: 'center',
+    color: COLORS.black,
   },
   button: {
     height: ms(48),
