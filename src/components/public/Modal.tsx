@@ -61,8 +61,8 @@ const CustomModal = () => {
       case ModalType.TWO_BUTTONS:
         return (
           <View style={styles.twoButtonsContainer}>
-            {renderButton(secondaryButtonText || '', onSecondaryButtonPress, [styles.secondaryButton], styles.secondaryButtonText)}
-            {renderButton(primaryButtonText || '', onPrimaryButtonPress, [styles.primaryButton], styles.primaryButtonText)}
+            {renderButton(secondaryButtonText || '', onSecondaryButtonPress, [styles.secondaryButton, styles.flexButton], styles.secondaryButtonText)}
+            {renderButton(primaryButtonText || '', onPrimaryButtonPress, [styles.primaryButton, styles.flexButton], styles.primaryButtonText)}
           </View>
         );
       case ModalType.STACKED_BUTTONS:
@@ -149,10 +149,11 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: COLORS.orange.Orange01,
-    flex: 1,
   },
   secondaryButton: {
     backgroundColor: COLORS.orange.Orange02,
+  },
+  flexButton: {
     flex: 1,
   },
   stackedButton: {
