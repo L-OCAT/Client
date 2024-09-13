@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useMemo, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useMemo, useState } from 'react';
 import {
   FlatList,
   Pressable,
@@ -8,17 +8,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useRecoilState} from 'recoil';
-import {PrimaryLargeBtn} from '../../components/public/Buttons';
-import {CloseBtnGnbHeader} from '../../components/public/GnbHeader';
-import {COLORS} from '../../lib/styles/theme';
-import {typography} from '../../lib/styles/typography';
-import {bottomWithSafeArea, ms} from '../../lib/utils/dimensions';
-import {lostItemColorsAtom} from '../../stores/lostItem';
-import {COLOR_VALUES, ColorOption} from '../../stores/lostItem/types';
+import { useRecoilState } from 'recoil';
+import { PrimaryLargeBtn } from '../../components/public/Buttons';
+import { CloseBtnGnbHeader } from '../../components/public/GnbHeader';
+import useModal from '../../hooks/useModal';
+import { COLORS } from '../../lib/styles/theme';
+import { typography } from '../../lib/styles/typography';
+import { bottomWithSafeArea, ms } from '../../lib/utils/dimensions';
+import { lostItemColorsAtom } from '../../stores/lostItem';
+import { COLOR_VALUES, ColorOption } from '../../stores/lostItem/types';
+import { LostItemColorsModalKeys, ScreenKeys } from '../../stores/modal/configs';
 
 const LostItemColorsScreen = () => {
   const navigation = useNavigation();
+  const {showModal, hideModal} = useModal();
   const [colors, setColors] = useRecoilState(lostItemColorsAtom);
   const [selectedColors, setSelectedColors] = useState<ColorOption[]>(colors);
 
@@ -29,7 +32,25 @@ const LostItemColorsScreen = () => {
       if (prev.includes(color)) {
         return prev.filter(c => c !== color);
       } else if (color === ColorOption.OTHER) {
+        if (prev.length > 0 && !prev.includes(ColorOption.OTHER)) {
+          showModal({
+            screen: ScreenKeys.LOST_ITEM_COLORS,
+            modalKey: LostItemColorsModalKeys.OTHER_COLOR_SELECTED,
+            customConfig: {
+              onPrimaryButtonPress: hideModal,
+            },
+          });
+        }
         return [color];
+      } else if (prev.includes(ColorOption.OTHER)) {
+        showModal({
+          screen: ScreenKeys.LOST_ITEM_COLORS,
+          modalKey: LostItemColorsModalKeys.OTHER_COLOR_SELECTED,
+          customConfig: {
+            onPrimaryButtonPress: hideModal,
+          },
+        });
+        return prev;
       } else if (!prev.includes(ColorOption.OTHER) && prev.length < 2) {
         return [...prev, color];
       }

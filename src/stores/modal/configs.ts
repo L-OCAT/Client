@@ -11,12 +11,16 @@ export enum LostItemRegistrationModalKeys {
   CONFIRMATION = 'CONFIRMATION',
 }
 
+export enum LostItemColorsModalKeys {
+  OTHER_COLOR_SELECTED = 'OTHER_COLOR_SELECTED',
+}
+
 export enum HomeModalKeys {}
 
 export enum ScreenKeys {
   LOST_ITEM_REGISTRATION = 'LOST_ITEM_REGISTRATION',
   HOME = 'HOME',
-  // 다른 스크린 키를 여기에 추가할 수 있습니다.
+  LOST_ITEM_COLORS = 'LOST_ITEM_COLORS',
 }
 
 export const MODAL_CONFIGS: ModalConfigsType = {
@@ -29,6 +33,14 @@ export const MODAL_CONFIGS: ModalConfigsType = {
       modalType: ModalType.TWO_BUTTONS,
     },
   },
+  [ScreenKeys.LOST_ITEM_COLORS]: {
+    [LostItemColorsModalKeys.OTHER_COLOR_SELECTED]: {
+      title: '색상 선택',
+      body: '기타를 선택하면 다른 색상은\n선택할 수 없어요.',
+      primaryButtonText: '확인',
+      modalType: ModalType.SINGLE_BUTTON,
+    },
+  },
   [ScreenKeys.HOME]: {
     // 홈스크린 등록 관련 모달 설정을 여기에 추가
   },
@@ -37,4 +49,6 @@ export const MODAL_CONFIGS: ModalConfigsType = {
 export const ModalKeysByScreen = {
   [ScreenKeys.LOST_ITEM_REGISTRATION]: LostItemRegistrationModalKeys,
   [ScreenKeys.HOME]: HomeModalKeys,
+  [ScreenKeys.LOST_ITEM_COLORS]: LostItemColorsModalKeys,
 } as const;
+
