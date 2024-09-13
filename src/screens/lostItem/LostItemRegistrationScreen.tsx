@@ -64,8 +64,6 @@ const LostItemRegistrationScreen = () => {
   const handleGoBackWithResetState = useResetOnBackNavigation(resetLostItem);
 
   const validateRequiredFields = useCallback(() => {
-    if (!hasBeenChecked) return true;
-    
     const newErrors = {
       name: !lostItemName.trim(),
       category: !lostItemCategory.main,
@@ -74,15 +72,20 @@ const LostItemRegistrationScreen = () => {
     
     setErrors(newErrors);
     return Object.values(newErrors).every(error => !error);
-  }, [hasBeenChecked, lostItemName, lostItemCategory.main, lostItemColors]);
+  }, [lostItemName, lostItemCategory.main, lostItemColors]);
 
   useEffect(() => {
-    validateRequiredFields();
-  }, [validateRequiredFields]);
+    if (hasBeenChecked) {
+      validateRequiredFields();
+    }
+  }, [validateRequiredFields, hasBeenChecked]);
 
   const handleNavigateToMap = () => {
     setHasBeenChecked(true);
-    if (!validateRequiredFields()) return;
+    const isValid = validateRequiredFields();
+    
+    if (!isValid) return;
+
     if (
       lostItemCategory.main === MainCategory.NONE &&
       lostItemColors.includes(ColorOption.OTHER)
@@ -113,6 +116,11 @@ const LostItemRegistrationScreen = () => {
       }
     : null;
 
+  const handleNameChange = (text: string) => {
+    setLostItemName(text);
+    setErrors(prev => ({...prev, name: false}));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingWrapper withMultiline={true}>
@@ -133,10 +141,7 @@ const LostItemRegistrationScreen = () => {
                   errors.name && styles.requiredField,
                 ]}
                 value={lostItemName}
-                onChangeText={text => {
-                  setLostItemName(text);
-                  setErrors(prev => ({...prev, name: false}));
-                }}
+                onChangeText={handleNameChange}
                 placeholder="물건 이름을 입력해주세요."
                 placeholderTextColor={COLORS.gray.Gray03}
               />
