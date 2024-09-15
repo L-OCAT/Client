@@ -3451,6 +3451,7 @@ __metadata:
     react: 18.2.0
     react-native: 0.74.3
     react-native-avoid-softinput: ^5.0.0
+    react-native-config: ^1.5.3
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.17.1
     react-native-image-picker: ^7.1.2
@@ -8807,6 +8808,18 @@ __metadata:
     react: ">=18.2.0"
     react-native: ">=0.71.0"
   checksum: 2bc798d27d94f1864dce7ef521c9a5233f64f3172691261ac5a4a3176a0b36741d2e30708048c9cbbf4197e884bec080820d2c7a2b7943cdf11c2aa6769efaf8
+  languageName: node
+  linkType: hard
+
+"react-native-config@npm:^1.5.3":
+  version: 1.5.3
+  resolution: "react-native-config@npm:1.5.3"
+  peerDependencies:
+    react-native-windows: ">=0.61"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 0eb74e0a10ae6e96422671482da83dea16571f4f5ad848d1f18015dccbecb9cbc066788df72a88c630abf4aed0edb7616ec27704817cff18bd6ed7d61979d671
   languageName: node
   linkType: hard
 
