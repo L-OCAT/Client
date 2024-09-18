@@ -1,23 +1,16 @@
-import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import React from 'react';
-import {Pressable, SafeAreaView, StyleSheet, Text} from 'react-native';
-import {isIOS} from '../../lib/utils';
+import { Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { isIOS } from '../../lib/utils';
 
 // svg
 import AppleIcon from '../../assets/svg/appleIcon.svg';
 import KakaoIcon from '../../assets/svg/kakaoIcon.svg';
 import Logo from '../../assets/svg/logo.svg';
-import {ms} from '../../lib/utils/dimensions';
+import { ms } from '../../lib/utils/dimensions';
 
 const LoginScreen = () => {
   const kakaoLogin = async () => {
-    await KakaoLogin.login()
-      .then(result => {
-        console.log('Login Success', JSON.stringify(result));
-      })
-      .catch(error => {
-        console.error(`Login Failed: ${error.code} - ${error.message}`);
-      });
+    console.log('kakaoLogin');
   };
 
   const appleLogin = () => {
