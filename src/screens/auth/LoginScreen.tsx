@@ -1,5 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { useSetRecoilState } from 'recoil';
@@ -13,8 +11,6 @@ import { ms } from '../../lib/utils/dimensions';
 import { userState } from '../../stores/user/atoms';
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
-  const queryClient = useQueryClient();
   const setUser = useSetRecoilState(userState);
   const { showWebView, handleShouldStartLoad, KAKAO_AUTH_URL, loginMutation, handleOpenKakaoLoginWebView, handleCloseKakaoLoginWebView } = useKakaoLogin();
 
@@ -22,7 +18,7 @@ const LoginScreen = () => {
     if (loginMutation.isSuccess) {
       setUser({ isLoggedIn: true });
     }
-  }, [loginMutation.isSuccess, setUser, queryClient]);
+  }, [loginMutation.isSuccess, setUser]);
 
   const appleLogin = () => {
     console.log('appleLogin');

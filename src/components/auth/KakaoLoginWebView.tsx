@@ -1,7 +1,8 @@
-import React from 'react';
-import { Modal, Pressable, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { WebView, WebViewNavigation } from 'react-native-webview';
 import CloseIcon from '../../assets/svg/icon_close.svg';
+import { COLORS } from '../../lib/styles/theme';
 import { ms } from '../../lib/utils/dimensions';
 
 interface KakaoLoginWebViewProps {
@@ -11,8 +12,23 @@ interface KakaoLoginWebViewProps {
   onClose: () => void;
 }
 
-const KakaoLoginWebView = ({ visible, authUrl, onShouldStartLoadWithRequest, onClose }: KakaoLoginWebViewProps) => (
-  <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+const KakaoLoginWebView = ({ visible, authUrl, onShouldStartLoadWithRequest, onClose }: KakaoLoginWebViewProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (visible) {
+      setIsLoading(true);
+    }
+  }, [visible]);
+
+  const handleClose = () => {
+    setIsLoading(true);
+    onClose();
+  };
+
+
+  return (
+  <Modal visible={visible} animationType="slide" onRequestClose={handleClose}>
       <WebView
         source={{ uri: authUrl }}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
@@ -20,17 +36,28 @@ const KakaoLoginWebView = ({ visible, authUrl, onShouldStartLoadWithRequest, onC
         incognito={true}
         cacheEnabled={false}
         style={styles.webview}
+        startInLoadingState={true}
+        onLoadStart={() => setIsLoading(true)}
+        onLoadEnd={() => setIsLoading(false)}
       />
-      <Pressable style={styles.closeButton} onPress={onClose}>
-      <CloseIcon />
-    </Pressable>
+      {isLoading && (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator 
+              size="large" 
+              color={COLORS.orange.Orange01} 
+            />
+          </View>
+        )}
+        {!isLoading && (
+          <Pressable style={styles.closeButton} onPress={onClose}>
+            <CloseIcon />
+          </Pressable>
+        )}
+
   </Modal>
-);
+);}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   webview: {
     flex: 1,
   },
@@ -42,6 +69,16 @@ const styles = StyleSheet.create({
     height: ms(48),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loaderContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
   },
 });
 
