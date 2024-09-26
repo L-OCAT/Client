@@ -1,5 +1,5 @@
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   Pressable,
@@ -9,12 +9,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import {COLORS, FONTFAMILY} from '../../lib/styles/theme';
-import {typography} from '../../lib/styles/typography';
+import { COLORS, FONTFAMILY } from '../../lib/styles/theme';
+import { typography } from '../../lib/styles/typography';
 
 import FastImage from 'react-native-fast-image';
 import RightIcon from '../../assets/svg/icon_right.svg';
-import {isIOS} from '../../lib/utils';
+import useModal from '../../hooks/useModal';
+import { isIOS } from '../../lib/utils';
 import {
   BASE_SAFEAREATOP,
   ms,
@@ -24,6 +25,7 @@ import {
   BottomTabParamList,
   MainStackNavigationProp,
 } from '../../navigation/types';
+import { HomeModalKeys, ScreenKeys } from '../../stores/modal';
 
 type HomeScreenNavigationProp = CompositeNavigationProp<
   MainStackNavigationProp,
@@ -32,6 +34,7 @@ type HomeScreenNavigationProp = CompositeNavigationProp<
 
 const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const {showModal, hideModal} = useModal();
 
   const handleNavigateToLostItem = () => {
     navigation.navigate('LostItemStack', {screen: 'LostItemRegistration'});
@@ -42,7 +45,22 @@ const HomeScreen = () => {
   };
 
   const handleNavigateToMatchingList = () => {
-    navigation.navigate('MyPageTab', {screen: 'MatchingList'});
+    // 추후 분실물 등록 여부에 따라 모달 제어
+    showModal({
+      screen: ScreenKeys.HOME,
+      modalKey: HomeModalKeys.NO_LOST_ITEM,
+      customConfig: {
+        onPrimaryButtonPress: () => {
+          hideModal();
+          handleNavigateToLostItem();
+        },
+        onSecondaryButtonPress: () => {
+          hideModal();
+          console.log('지도로 이동');
+          // navigation.navigate('MapScreen');
+        },
+      },
+    });
   };
 
   return (

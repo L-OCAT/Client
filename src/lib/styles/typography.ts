@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {FONTFAMILY} from './theme';
+import { StyleSheet } from 'react-native';
+import { FONTFAMILY } from './theme';
 
 export const typography = StyleSheet.create({
   header: {
@@ -22,6 +22,11 @@ export const typography = StyleSheet.create({
     fontSize: 20,
     lineHeight: 20 * 1.3,
   },
+  subTitle_02_M: {
+    fontFamily: FONTFAMILY.pretendard_medium,
+    fontSize: 20,
+    lineHeight: 20 * 1.3,
+  },
   body_01: {
     fontFamily: FONTFAMILY.pretendard_regular,
     fontSize: 18,
@@ -29,6 +34,11 @@ export const typography = StyleSheet.create({
   },
   body_01_B: {
     fontFamily: FONTFAMILY.pretendard_bold,
+    fontSize: 18,
+    lineHeight: 18 * 1.3,
+  },
+  body_01_M: {
+    fontFamily: FONTFAMILY.pretendard_medium,
     fontSize: 18,
     lineHeight: 18 * 1.3,
   },
