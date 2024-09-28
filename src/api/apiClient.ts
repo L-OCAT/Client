@@ -1,7 +1,8 @@
 import axios from 'axios';
+import Config from 'react-native-config';
 
 const apiClient = axios.create({
-  baseURL: '베이스 url',
+  baseURL: Config.API_URL,
   headers: {
     'Content-Type': 'application/json',
   },

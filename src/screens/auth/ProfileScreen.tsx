@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,22 +7,20 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import ProfileImg from '../../assets/svg/defaultProfile.svg';
 import {
   PrimaryLargeBtn,
   TertiaryMediumBtn,
 } from '../../components/public/Buttons';
+import { BackBtnGnbHeader } from '../../components/public/GnbHeader';
+import { KeyboardAvoidingWrapper } from '../../components/public/KeyboardAvoidingWrapper';
 import {
   smallTextStyles,
   textInputStyles,
 } from '../../lib/styles/textInputStyles';
-import {COLORS} from '../../lib/styles/theme';
-
-//svg
-import ProfileImg from '../../assets/svg/defaultProfile.svg';
-import {BackBtnGnbHeader} from '../../components/public/GnbHeader';
-import {KeyboardAvoidingWrapper} from '../../components/public/KeyboardAvoidingWrapper';
-import {typography} from '../../lib/styles/typography';
-import {ms} from '../../lib/utils/dimensions';
+import { COLORS } from '../../lib/styles/theme';
+import { typography } from '../../lib/styles/typography';
+import { ms } from '../../lib/utils/dimensions';
 
 const ProfileScreen = () => {
   const [isValid, setIsValid] = useState(false);

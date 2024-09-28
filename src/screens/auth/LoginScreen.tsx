@@ -1,24 +1,24 @@
-import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import React from 'react';
-import {Pressable, SafeAreaView, StyleSheet, Text} from 'react-native';
-import {isIOS} from '../../lib/utils';
-
-// svg
+import { Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { useSetRecoilState } from 'recoil';
 import AppleIcon from '../../assets/svg/appleIcon.svg';
 import KakaoIcon from '../../assets/svg/kakaoIcon.svg';
 import Logo from '../../assets/svg/logo.svg';
-import {ms} from '../../lib/utils/dimensions';
+import KakaoLoginWebView from '../../components/auth/KakaoLoginWebView';
+import { useKakaoLogin } from '../../hooks/useKakaoLogin';
+import { isIOS } from '../../lib/utils';
+import { ms } from '../../lib/utils/dimensions';
+import { userState } from '../../stores/user/atoms';
 
 const LoginScreen = () => {
-  const kakaoLogin = async () => {
-    await KakaoLogin.login()
-      .then(result => {
-        console.log('Login Success', JSON.stringify(result));
-      })
-      .catch(error => {
-        console.error(`Login Failed: ${error.code} - ${error.message}`);
-      });
-  };
+  const setUser = useSetRecoilState(userState);
+  const { showWebView, handleShouldStartLoad, KAKAO_AUTH_URL, loginMutation, handleOpenKakaoLoginWebView, handleCloseKakaoLoginWebView } = useKakaoLogin();
+
+  React.useEffect(() => {
+    if (loginMutation.isSuccess) {
+      setUser({ isLoggedIn: true });
+    }
+  }, [loginMutation.isSuccess, setUser]);
 
   const appleLogin = () => {
     console.log('appleLogin');
@@ -27,11 +27,17 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Logo style={styles.logo} />
-      <Pressable style={[styles.btn, styles.kakaoBtn]} onPress={kakaoLogin}>
+      <Pressable style={[styles.btn, styles.kakaoBtn]} onPress={handleOpenKakaoLoginWebView}>
         <KakaoIcon />
         <Text style={[styles.btnText, styles.kakaoBtnText]}>카카오 로그인</Text>
       </Pressable>
-
+      {loginMutation.isError && <Text>로그인 실패: {loginMutation.error.message}</Text>}
+      <KakaoLoginWebView
+        visible={showWebView}
+        authUrl={KAKAO_AUTH_URL}
+        onShouldStartLoadWithRequest={handleShouldStartLoad}
+        onClose={handleCloseKakaoLoginWebView}
+      />
       {isIOS && (
         <Pressable style={[styles.btn, styles.appleBtn]} onPress={appleLogin}>
           <AppleIcon />

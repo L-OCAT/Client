@@ -1,4 +1,4 @@
-package com.locatclient
+package com.locat
 
 import android.app.Application
 import com.facebook.react.PackageList
